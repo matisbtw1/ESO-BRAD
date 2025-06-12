@@ -5,3 +5,7 @@ void mostrarMenu() {
     printf("3. Opcion 3\n");
     printf("4. Salir\n");
 }
+
+void imprimirMensaje(const char *mensaje) {
+    printf("%s\n", mensaje);
+}
