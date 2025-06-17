@@ -1,4 +1,5 @@
 //Implementacion para crear un csv de finanzas del año ingresado por el usuario 
+/*
    int anio;
     printf("Ingresa el año para crear archivo de finanzas: ");
     scanf("%d", &anio);
@@ -14,3 +15,4 @@
     } else {
         copiarArchivoCSV("plantilla.csv", nombreArchivo);
     }
+*/
