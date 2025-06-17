@@ -1,5 +1,4 @@
 # ESO-BRAD
-probando 7pm
-dddd
-prueba francis 7:04
-prueba jp
+gcc -g main.c funciones.c tdas/extra.c tdas/list.c tdas/treeMap.c tdas/hashmap.c -o finanzas
+
+./finanzas
