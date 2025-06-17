@@ -38,3 +38,10 @@
 0. Salir
 */
 
+
+int main()
+{
+    print_welcome_message();
+
+    return 0;
+}
