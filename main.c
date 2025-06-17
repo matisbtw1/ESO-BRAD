@@ -107,8 +107,8 @@ void mostrarMenu() {
 
 int main()
 {
-    int opcion;
-    do{
+   int opcion;
+   while (true){
    scanf("%d", &opcion);
    switch (opcion) {
        case 1:
@@ -163,9 +163,8 @@ int main()
            return 0; // Salir del programa
        default:
            printf("Opción no válida. Intente nuevamente.\n");
-    return 0;
-    }
-} while (opcion != 0);
+      }
+   }
 }
 
 
