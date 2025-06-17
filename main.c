@@ -86,7 +86,6 @@ typedef struct {
 
 int main()
 {
-    print_welcome_message();
 
     return 0;
 }
