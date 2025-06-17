@@ -47,3 +47,86 @@ void copiarArchivoCSV(const char* origen, const char* destino) {
     fclose(fileDestino);
     printf("Archivo '%s' creado correctamente desde '%s'.\n", destino, origen);
 }
+int lower_than_string(void *key1, void *key2) {
+    char *str1 = (char *)key1;
+    char *str2 = (char *)key2;
+    if (strcmp(str1,str2) < 0) {
+        return 1; // str1 es menor que str2
+    }
+    return 0;
+
+
+}
+
+
+void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
+  FILE *archivo = fopen(nombreArchivo, "r");
+  if (!archivo) {
+    printf("No se pudo abrir el archivo.\n");
+    return;
+  }
+
+  char **campos = leer_linea_csv(archivo, ','); // Leer encabezado
+  if (!campos) return;
+
+  // Guardar índices importantes
+  int idxMes = -1;
+  int categoriasInicio = -1;
+
+  for (int i = 0; campos[i] != NULL; i++) {
+    if (strcmp(campos[i], "Mes") == 0) idxMes = i;
+    else if (categoriasInicio == -1 && strcmp(campos[i], "Agua") == 0) categoriasInicio = i;
+  }
+
+  while ((campos = leer_linea_csv(archivo, ',')) != NULL) {
+    char *mes = strdup(campos[idxMes]);  // Clave del árbol
+
+    // Revisar si ya existe una lista para ese mes
+    Pair *par = searchTreeMap(arbol, mes);
+    List *lista;
+
+    if (par == NULL) {
+      lista = list_create();
+      insertTreeMap(arbol, mes, lista);
+    } else {
+      free(mes); // Ya existe, usamos la misma clave
+      lista = (List *)par->value;
+    }
+
+    // Cargar los movimientos del mes actual
+    for (int i = categoriasInicio; campos[i] != NULL; i += 2) {
+      if (campos[i + 1] == NULL) break; // Evitar acceso fuera de rango
+
+      Movimiento *mov = malloc(sizeof(Movimiento));
+      strcpy(mov->categoria, campos[i]);
+      mov->valor = atoi(campos[i]);
+      strcpy(mov->estado, campos[i + 1]);
+
+      list_pushBack(lista, mov);
+    }
+  }
+
+  fclose(archivo);
+}
+
+void mostrarMovimientosPorMes(TreeMap *arbol) {
+  Pair *par = firstTreeMap(arbol);
+
+  while (par != NULL) {
+    char *mes = (char *)par->key;
+    List *lista = (List *)par->value;
+
+    printf("📅 Mes: %s\n", mes);
+    printf("-----------------------------------\n");
+
+    Movimiento *mov = firstList(lista);
+    while (mov != NULL) {
+      printf("Categoría: %-15s | Valor: %6d | Estado: %s\n",
+             mov->categoria, mov->valor, mov->estado);
+      mov = nextList(lista);
+    }
+
+    printf("\n");
+    par = nextTreeMap(arbol);
+  }
+}

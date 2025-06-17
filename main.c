@@ -31,10 +31,7 @@
    6.1 Enviar a cuenta de ahorro
    6.2 Usar como fondo de ocio
    6.3 Ver cuenta de ahorro
-7. Buscar movimiento
-   7.1 Por fecha
-   7.2 Por categoría
-   7.3 Por descripción
+
 0. Salir
 */
 
@@ -44,12 +41,15 @@
 int main()
 {
    int opcion;
+   TreeMap *arbol = createTreeMap(lower_than_string); // Crear el árbol para almacenar los movimientos financieros
+   mostrarMenu();
    while (true){
    scanf("%d", &opcion);
    switch (opcion) {
        case 1:
            printf("Registrar movimiento financiero\n");
            // Aquí iría la lógica para registrar un movimiento financiero
+           cargarMovimientosDesdeCSV(arbol, "movimientos.csv"); // Cargar movimientos desde un archivo CSV
            break;
        case 2:
            printf("Ver resumen mensual\n");

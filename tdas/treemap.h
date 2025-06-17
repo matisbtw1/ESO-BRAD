@@ -8,7 +8,7 @@ typedef struct Pair {
      void * value;
 } Pair;
 
-TreeMap * createTreeMap(int (*lower_than_int) (void* key1, void* key2));
+TreeMap * createTreeMap(int (*lower_than_int) (void* key1, void* key2)); 
 
 void insertTreeMap(TreeMap * tree, void* key, void * value);
 
