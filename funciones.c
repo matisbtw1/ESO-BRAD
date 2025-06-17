@@ -5,7 +5,6 @@
 #include <ctype.h>
 #include "tdas/extra.h"
 #include "tdas/list.h"
-#include "tdas/treemap.h"
 
 void mostrarMenu() {
     printf("Menu de opciones:\n");
