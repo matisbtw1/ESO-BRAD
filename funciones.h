@@ -1,18 +1,11 @@
-//Implementacion para crear un csv de finanzas del año ingresado por el usuario 
-/*
-   int anio;
-    printf("Ingresa el año para crear archivo de finanzas: ");
-    scanf("%d", &anio);
+#ifndef FUNCIONES_H
+#define FUNCIONES_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "tdas/list.h"
 
-    char nombreArchivo[100];
-    sprintf(nombreArchivo, "finanzas_%d.csv", anio);
 
-    // Verificar si ya existe
-    FILE *archivo = fopen(nombreArchivo, "r");
-    if (archivo) {
-        printf("El archivo ya existe, no se sobreescribirá.\n");
-        fclose(archivo);
-    } else {
-        copiarArchivoCSV("plantilla.csv", nombreArchivo);
-    }
-*/
+void copiarArchivoCSV(const char* origen, const char* destino);
+
+#endif // FUNCIONES_H

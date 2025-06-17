@@ -8,6 +8,7 @@
 #include    "tdas/extra.h"
 #include    "tdas/list.h"
 #include    "tdas/treeMap.c"
+#include    "funciones.h"
 
 /* MENÚ PRINCIPAL
 1. Registrar movimiento financiero
@@ -106,7 +107,61 @@ void mostrarMenu() {
 
 int main()
 {
-
+   int opcion;
+   scanf("%d", &opcion);
+   switch (opcion) {
+       case 1:
+           printf("Registrar movimiento financiero\n");
+           // Aquí iría la lógica para registrar un movimiento financiero
+           break;
+       case 2:
+           printf("Ver resumen mensual\n");
+           // Aquí iría la lógica para ver el resumen mensual
+           break;
+       case 3:
+           printf("Presupuesto mensual\n");
+           // Aquí iría la lógica para manejar el presupuesto mensual
+           break;
+       case 4:
+           printf("Gastos planificados\n");
+           // Aquí iría la lógica para manejar los gastos planificados
+           break;
+       case 5:
+           printf("Historial y análisis\n");
+           // Aquí iría la lógica para el historial y análisis
+           break;
+       case 6:
+           printf("Excedente mensual\n");
+           // Aquí iría la lógica para manejar el excedente mensual
+           break;
+       case 7:
+           printf("Ver cuenta de ahorro\n");
+           // Aquí iría la lógica para ver la cuenta de ahorro
+           break;
+       case 8:
+           printf("Crear nuevo csv finanzas anio\n");
+           int anio;
+           printf("Ingresa el año para crear archivo de finanzas: ");
+           scanf("%d", &anio);
+           
+           char nombreArchivo[100];
+           sprintf(nombreArchivo, "finanzas_%d.csv", anio);
+           
+           // Verificar si ya existe
+           FILE *archivo = fopen(nombreArchivo, "r");
+           if (archivo) {
+            printf("El archivo ya existe, no se sobreescribirá.\n");
+            fclose(archivo);
+            }
+            else {
+               copiarArchivoCSV("plantilla.csv", nombreArchivo);
+            }
+           break;
+       case 0:
+           printf("Salir del programa\n");
+           return 0; // Salir del programa
+       default:
+           printf("Opción no válida. Intente nuevamente.\n");
     return 0;
 }
 
