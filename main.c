@@ -95,7 +95,8 @@ void mostrarMenu() {
     printf("4. Gastos planificados\n");
     printf("5. Historial y análisis\n");
     printf("6. Excedente mensual\n");
-    printf("7. Buscar movimiento\n");
+    printf("7. Ver cuenta de ahorro\n");
+    printf("8. Crear nuevo csv finanzas anio\n");
     printf("0. Salir\n");
 }
 
