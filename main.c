@@ -40,23 +40,6 @@
 
 // funciones.c hay una funcion que copia archivo csv, ahi esta la plantilla de finanzas, con esa funcion toma la plantilla y crea un archivo nuevo con el año que ingresa el usuario
 // Implementacion para crear un csv de finanzas del año ingresado por el usuario, esta funcion
-/*
-void mostrarMenu() {
-    printf("Menu de opciones:\n");
-    printf("1. Registrar movimiento financiero\n");
-    printf("2. Ver resumen mensual\n");
-    printf("3. Presupuesto mensual\n");
-    printf("4. Gastos planificados\n");
-    printf("5. Historial y análisis\n");
-    printf("6. Excedente mensual\n");
-    printf("7. Ver cuenta de ahorro\n");
-    printf("8. Crear nuevo csv finanzas anio\n");
-    printf("0. Salir\n");
-}
-*/
-
-
-
 
 int main()
 {
