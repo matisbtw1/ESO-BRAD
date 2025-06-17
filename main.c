@@ -41,7 +41,7 @@
 int main()
 {
    int opcion;
-   TreeMap *arbol = createTreeMap(lower_than_string); // Crear el árbol para almacenar los movimientos financieros
+   TreeMap *arbol = createTreeMap(lower_than_mes); // Crear el árbol para almacenar los movimientos financieros
    mostrarMenu();
    while (true){
    scanf("%d", &opcion);
@@ -49,11 +49,12 @@ int main()
        case 1:
            printf("Registrar movimiento financiero\n");
            // Aquí iría la lógica para registrar un movimiento financiero
-           cargarMovimientosDesdeCSV(arbol, "movimientos.csv"); // Cargar movimientos desde un archivo CSV
+           cargarMovimientosDesdeCSV(arbol, "finanzas_2025.csv"); // Cargar movimientos desde un archivo CSV
            break;
        case 2:
            printf("Ver resumen mensual\n");
            // Aquí iría la lógica para ver el resumen mensual
+              mostrarMovimientosPorMes(arbol); // Mostrar los movimientos por mes
            break;
        case 3:
            printf("Presupuesto mensual\n");

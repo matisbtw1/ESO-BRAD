@@ -119,14 +119,31 @@ void mostrarMovimientosPorMes(TreeMap *arbol) {
     printf("📅 Mes: %s\n", mes);
     printf("-----------------------------------\n");
 
-    Movimiento *mov = firstList(lista);
+    Movimiento *mov = list_first(lista);
     while (mov != NULL) {
       printf("Categoría: %-15s | Valor: %6d | Estado: %s\n",
              mov->categoria, mov->valor, mov->estado);
-      mov = nextList(lista);
+      mov = list_next(lista);
     }
 
     printf("\n");
     par = nextTreeMap(arbol);
   }
 }
+// ...existing code...
+
+int mes_a_numero(const char* mes) {
+    const char* meses[] = {"enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"};
+    for (int i = 0; i < 12; i++) {
+        if (strcasecmp(mes, meses[i]) == 0) return i+1;
+    }
+    return 0; // No encontrado
+}
+
+int lower_than_mes(void* key1, void* key2) {
+    int n1 = mes_a_numero((const char*)key1);
+    int n2 = mes_a_numero((const char*)key2);
+    return n1 < n2;
+}
+
+// ...existing code...
