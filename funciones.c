@@ -203,20 +203,17 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
     printf("Ingrese el ingreso para %s: ", mes);
     scanf("%d", &datosMes->ingresos);
 
-    int numGastos;
-    printf("¿Cuántos gastos desea ingresar para %s?: ", mes);
-    scanf("%d", &numGastos);
-
-    datosMes->totalGastos = 0;
     // Limpiar lista de gastos anterior si existe
+    datosMes->totalGastos = 0;
     while (list_first(datosMes->listaGastos)) {
         Gasto *g = list_popFront(datosMes->listaGastos);
         free(g);
     }
 
-    for (int i = 0; i < numGastos; i++) {
+    char respuesta[8];
+    do {
         Gasto *g = (Gasto*)malloc(sizeof(Gasto));
-        printf("Ingrese nombre de la categoría de gasto #%d: ", i+1);
+        printf("Ingrese nombre de la categoría de gasto: ");
         scanf("%63s", g->categoria);
         printf("Ingrese monto de %s: ", g->categoria);
         scanf("%d", &g->monto);
@@ -224,7 +221,10 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         scanf("%15s", g->estado);
         datosMes->totalGastos += g->monto;
         list_pushBack(datosMes->listaGastos, g);
-    }
+
+        printf("¿Desea agregar otra categoría de gasto? (si/no): ");
+        scanf("%7s", respuesta);
+    } while (strcasecmp(respuesta, "si") == 0 || strcasecmp(respuesta, "sí") == 0);
 
     printf("Ingrese monto ahorrado para %s: ", mes);
     scanf("%d", &datosMes->ahorrado);
