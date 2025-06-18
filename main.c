@@ -11,8 +11,8 @@
 
 /* MENÚ PRINCIPAL
 1. Registrar movimiento financiero
-   1.1 Registrar ingreso ✅
-   1.2 Registrar gasto ✅
+   1.1 Registrar ingreso 
+   1.2 Registrar gasto 
 2. Ver resumen mensual
    2.1 Ver totales y saldo
    2.2 Ver porcentajes por categoría
