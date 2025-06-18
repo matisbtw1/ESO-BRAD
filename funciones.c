@@ -202,6 +202,11 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         insertTreeMap(arbol, datosMes->nombreMes, datosMes);
     }
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 61fb5849a795d9124762862017e23bf2cd7d2dae
     printf("Ingrese el ingreso para %s: ", mes);
     scanf("%d", &datosMes->ingresos);
 
