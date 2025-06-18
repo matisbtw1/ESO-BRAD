@@ -58,6 +58,12 @@ int lower_than_string(void *key1, void *key2) {
 
 }
 
+void tolowercase(char *str) 
+{
+    for (int i = 0; str[i]; i++) {
+        str[i] = tolower(str[i]);
+    }
+}
 
 void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
     FILE *archivo = fopen(nombreArchivo, "r");
