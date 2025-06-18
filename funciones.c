@@ -60,53 +60,75 @@ int lower_than_string(void *key1, void *key2) {
 
 
 void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
-  FILE *archivo = fopen(nombreArchivo, "r");
-  if (!archivo) {
-    printf("No se pudo abrir el archivo.\n");
-    return;
-  }
-
-  char **campos = leer_linea_csv(archivo, ','); // Leer encabezado
-  if (!campos) return;
-
-  // Guardar índices importantes
-  int idxMes = -1;
-  int categoriasInicio = -1;
-
-  for (int i = 0; campos[i] != NULL; i++) {
-    if (strcmp(campos[i], "Mes") == 0) idxMes = i;
-    else if (categoriasInicio == -1 && strcmp(campos[i], "Agua") == 0) categoriasInicio = i;
-  }
-
-  while ((campos = leer_linea_csv(archivo, ',')) != NULL) {
-    char *mes = strdup(campos[idxMes]);  // Clave del árbol
-
-    // Revisar si ya existe una lista para ese mes
-    Pair *par = searchTreeMap(arbol, mes);
-    List *lista;
-
-    if (par == NULL) {
-      lista = list_create();
-      insertTreeMap(arbol, mes, lista);
-    } else {
-      free(mes); // Ya existe, usamos la misma clave
-      lista = (List *)par->value;
+    FILE *archivo = fopen(nombreArchivo, "r");
+    if (!archivo) {
+        printf("No se pudo abrir el archivo.\n");
+        return;
     }
 
-    // Cargar los movimientos del mes actual
-    for (int i = categoriasInicio; campos[i] != NULL; i += 2) {
-      if (campos[i + 1] == NULL) break; // Evitar acceso fuera de rango
+    // Leer encabezado
+    char **encabezadosTemp = leer_linea_csv(archivo, ',');
+    if (!encabezadosTemp) return;
 
-      Movimiento *mov = malloc(sizeof(Movimiento));
-      strcpy(mov->categoria, campos[i]);
-      mov->valor = atoi(campos[i]);
-      strcpy(mov->estado, campos[i + 1]);
+    // Contar cuántos encabezados hay
+    int numCampos = 0;
+    while (encabezadosTemp[numCampos] != NULL) numCampos++;
 
-      list_pushBack(lista, mov);
+    // Reservar memoria para copia de encabezados
+    char **encabezados = malloc((numCampos + 1) * sizeof(char *));
+    for (int i = 0; i < numCampos; i++) {
+      encabezados[i] = strdup(encabezadosTemp[i]);
     }
-  }
+    encabezados[numCampos] = NULL; // último es NULL
 
-  fclose(archivo);
+    int idxMes = -1, idxIngreso = -1, idxAhorrado = -1, idxTotalGastos = -1, idxModificado = -1;
+    int idxInicioGastos = -1;
+    int idxFinGastos = -1;
+
+    int totalColumnas = 0;
+    while (encabezados[totalColumnas] != NULL) totalColumnas++;
+
+    for (int i = 0; i < totalColumnas; i++) {
+        if (strcmp(encabezados[i], "Mes") == 0) idxMes = i;
+        else if (strcmp(encabezados[i], "Ingreso") == 0) idxIngreso = i;
+        else if (strcmp(encabezados[i], "Ahorrado") == 0) idxAhorrado = i;
+        else if (strcmp(encabezados[i], "Total Gastos") == 0) idxTotalGastos = i;
+        else if (strcmp(encabezados[i], "Modificado") == 0) idxModificado = i;
+        else if (idxInicioGastos == -1 && strcmp(encabezados[i], "Agua") == 0) idxInicioGastos = i;
+    }
+
+    // Leer línea por línea
+    char **campos;
+    while ((campos = leer_linea_csv(archivo, ',')) != NULL) {
+        // Crear estructura del mes
+        MesFinanciero *mes = malloc(sizeof(MesFinanciero));
+        strcpy(mes->nombreMes, campos[idxMes]);
+        mes->ingresos = atoi(campos[idxIngreso]);
+        mes->ahorrado = atoi(campos[idxAhorrado]);
+        mes->totalGastos = atoi(campos[idxTotalGastos]);
+        mes->modificado = strcmp(campos[idxModificado], "Sí") == 0 ? 1 : 0;
+        mes->listaGastos = list_create();
+
+        // Leer gastos
+        for (int i = idxInicioGastos; i < idxTotalGastos; i += 2) {
+            if (campos[i] == NULL || campos[i + 1] == NULL) break;
+
+            Gasto *g = malloc(sizeof(Gasto));
+            strcpy(g->categoria, encabezados[i]); // Nombre viene del header
+            g->monto = atoi(campos[i]);
+            strcpy(g->estado, campos[i + 1]);
+
+            list_pushBack(mes->listaGastos, g);
+        }
+
+        // Insertar en árbol
+        insertTreeMap(arbol, mes->nombreMes, mes);
+        for (int i = 0; i < totalColumnas; i++) {
+            printf(encabezados[i]); // Liberar memoria de los encabezados
+        }
+    }
+
+    fclose(archivo);
 }
 
 void mostrarMovimientosPorMes(TreeMap *arbol) {
@@ -114,15 +136,19 @@ void mostrarMovimientosPorMes(TreeMap *arbol) {
 
   while (par != NULL) {
     char *mes = (char *)par->key;
-    List *lista = (List *)par->value;
+    MesFinanciero *mesFinanciero = (MesFinanciero *)par->value;
 
     printf("Mes: %s\n", mes);
+    printf("Ingresos: %d\n", mesFinanciero->ingresos);
+    printf("Ahorro: %d\n", mesFinanciero->ahorrado);
+    printf("Total Gastos: %d\n", mesFinanciero->totalGastos);
     printf("-----------------------------------\n");
 
-    Movimiento *mov = list_first(lista);
+    List *lista = mesFinanciero->listaGastos;
+    Gasto *mov = list_first(lista);
     while (mov != NULL) {
       printf("Categoría: %-15s | Valor: %6d | Estado: %s\n",
-             mov->categoria, mov->valor, mov->estado);
+             mov->categoria, mov->monto, mov->estado);
       mov = list_next(lista);
     }
 

@@ -17,11 +17,11 @@ typedef struct {
 
 typedef struct {
     char nombreMes[12];
-    int ingreso;
+    int ingresos;
     int ahorrado;
     int totalGastos;
     int modificado;
-    Gasto *listaGastos;
+    List *listaGastos;
 } MesFinanciero;
 
 int lower_than_string(void* key1, void* key2);
@@ -32,4 +32,4 @@ void mostrarMenu();
 int mes_a_numero(const char* mes);
 int lower_than_mes(void* key1, void* key2);
 
-#endif // FUNCIONES_H
+#endif
