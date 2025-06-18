@@ -18,7 +18,6 @@ typedef struct {
 typedef struct {
     char nombreMes[12];
     int ingresos;
-    int presupuesto;
     int ahorrado;
     int totalGastos;
     int modificado;
