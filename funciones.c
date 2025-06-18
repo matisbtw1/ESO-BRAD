@@ -58,12 +58,6 @@ int lower_than_string(void *key1, void *key2) {
 
 }
 
-void tolowercase(char *str) 
-{
-    for (int i = 0; str[i]; i++) {
-        str[i] = tolower(str[i]);
-    }
-}
 
 void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
     FILE *archivo = fopen(nombreArchivo, "r");
@@ -243,19 +237,12 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
     scanf("%31s", mes);
 
     // Buscar si el mes ya existe
-    MesFinanciero *datosMes = searchTreeMap(arbol, mes) ? (MesFinanciero*)searchTreeMap(arbol, mes)->value : NULL;
-
-    if (!datosMes) {
-        // Si no existe, crear uno nuevo
-        datosMes = (MesFinanciero*)malloc(sizeof(MesFinanciero));
-        strcpy(datosMes->nombreMes, mes);
-        datosMes->ingresos = 0;
-        datosMes->ahorrado = 0;
-        datosMes->totalGastos = 0;
-        datosMes->modificado = 1;
-        datosMes->listaGastos = list_create();
-        insertTreeMap(arbol, datosMes->nombreMes, datosMes);
+    Pair *par = searchTreeMap(arbol, mes);
+    if (!par) {
+        printf("El mes '%s' no existe. Debe crearlo primero.\n", mes);
+        return;
     }
+    MesFinanciero *datosMes = (MesFinanciero*)par->value;
 
     printf("Ingrese el ingreso para %s: ", mes);
     scanf("%d", &datosMes->ingresos);
@@ -274,7 +261,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         scanf("%63s", g->categoria);
         printf("Ingrese monto de %s: ", g->categoria);
         scanf("%d", &g->monto);
-        printf("¿Pagado o Por pagar?: ");
+        printf("¿Pagado o Pendiente?: ");
         scanf("%15s", g->estado);
         datosMes->totalGastos += g->monto;
         list_pushBack(datosMes->listaGastos, g);
