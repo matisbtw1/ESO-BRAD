@@ -229,6 +229,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         printf("Ingrese el monto para %s: ", g->categoria);
         scanf("%d", &nuevoMonto);
         g->monto = nuevoMonto;
+        
 
         //opcion para cambiar el estado del gasto en numero
         int opcionEstado;
@@ -243,19 +244,27 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         if (opcionEstado == 1) {
             strcpy(g->estado, "Pendiente");
         } else if (opcionEstado == 2) {
+            if (datosMes->ahorrado < g->monto) {
+                printf("No hay suficiente dinero para pagar este gasto.\n");
+                strcpy(g->estado, "Pendiente");
+                printf("El gasto se ha dejado como pendiente.\n");
+                continue; // No se puede pagar, salir del bucle
+            }
             strcpy(g->estado, "Pagado");
+            datosMes->totalGastos += g->monto; // Actualizar total de gastos
+            datosMes->ahorrado -= g->monto; 
+            
         }
 
-        // Actualizar total de gastos
-        
+        // Actual
 
         
     }
-    g = list_first(datosMes->listaGastos);
-    while (g) {
-        datosMes->totalGastos += g->monto;
-        g = list_next(datosMes->listaGastos);
-    }
+    
+
+
+
+
     //mes ya modificado
     datosMes->modificado = 1; // Marcar como modificado
     printf("¡Movimiento financiero actualizado para %s!\n", mes);
@@ -265,3 +274,9 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
 
 // el ingreso se ira a ahorrado y de ahi se descontara lo que tenga que pagarse para cada cuenta, el ahorrado tendra dinero que permitira pagar a futuro
 // si marco wea pagado que se desucente del ahorrado, si no se paga se queda en pendiente y no se descuenta del ahorrado
+
+//PENDIENTE HACER EN LA FUNCION DE ARRIBA
+
+// Ingreso se puedan modificar
+// Gastos se puedan modificar
+// preguntar si quiere aceptar el ingreso del gasto o no, si no se acepta se deja como pendiente si no queda como tal (no se puede modificar el estado de un gasto pagado)

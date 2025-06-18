@@ -11,8 +11,8 @@
 
 /* MENÚ PRINCIPAL
 1. Registrar movimiento financiero
-   1.1 Registrar ingreso
-   1.2 Registrar gasto
+   1.1 Registrar ingreso ✅
+   1.2 Registrar gasto ✅
 2. Ver resumen mensual
    2.1 Ver totales y saldo
    2.2 Ver porcentajes por categoría
@@ -28,9 +28,7 @@
    5.2 Comparar meses
    5.3 Tendencias de gasto
 6. Excedente mensual
-   6.1 Enviar a cuenta de ahorro
-   6.2 Usar como fondo de ocio
-   6.3 Ver cuenta de ahorro
+   6.1 Revisar cuenta de ahorro
 
 0. Salir
 */
