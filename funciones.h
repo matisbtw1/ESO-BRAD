@@ -10,17 +10,19 @@
 
 
 typedef struct {
-  char categoria[64];
-  int valor;
-  char estado[64];
-} Movimiento;
+    char categoria[20];
+    int monto;
+    char estado[15]; // "pendiente", "pagado", etc.
+} Gasto;
 
-typedef struct{
-    char categoria[30];
-    float limite;
-    float usado;
-} Presupuesto;
-
+typedef struct {
+    char nombreMes[12];
+    int ingreso;
+    int ahorrado;
+    int totalGastos;
+    int modificado;
+    Gasto *listaGastos;
+} MesFinanciero;
 
 int lower_than_string(void* key1, void* key2);
 void copiarArchivoCSV(const char* origen, const char* destino);
