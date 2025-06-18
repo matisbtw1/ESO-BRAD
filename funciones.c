@@ -175,60 +175,6 @@ int lower_than_mes(void* key1, void* key2) {
 
 // ...existing code...
 
-// Función para registrar movimiento financiero
-void registrarMovimientoFinanciero(TreeMap *arbol) {
-    char mes[32];
-    printf("Ingrese el mes (ejemplo: enero): ");
-    scanf("%31s", mes);
-
-    // Buscar si el mes ya existe
-    MesFinanciero *datosMes = searchTreeMap(arbol, mes) ? (MesFinanciero*)searchTreeMap(arbol, mes)->value : NULL;
-
-    if (!datosMes) {
-        // Si no existe, crear uno nuevo
-        datosMes = (MesFinanciero*)malloc(sizeof(MesFinanciero));
-        strcpy(datosMes->nombreMes, mes);
-        datosMes->ingresos = 0;
-        datosMes->ahorrado = 0;
-        datosMes->totalGastos = 0;
-        datosMes->modificado = 1;
-        datosMes->listaGastos = list_create();
-        insertTreeMap(arbol, datosMes->nombreMes, datosMes);
-    }
-
-    printf("Ingrese el ingreso para %s: ", mes);
-    scanf("%d", &datosMes->ingresos);
-
-    // Limpiar lista de gastos anterior si existe
-    datosMes->totalGastos = 0;
-    while (list_first(datosMes->listaGastos)) {
-        Gasto *g = list_popFront(datosMes->listaGastos);
-        free(g);
-    }
-
-    char respuesta[8];
-    do {
-        Gasto *g = (Gasto*)malloc(sizeof(Gasto));
-        printf("Ingrese nombre de la categoría de gasto: ");
-        scanf("%63s", g->categoria);
-        printf("Ingrese monto de %s: ", g->categoria);
-        scanf("%d", &g->monto);
-        printf("¿Pagado o Por pagar?: ");
-        scanf("%15s", g->estado);
-        datosMes->totalGastos += g->monto;
-        list_pushBack(datosMes->listaGastos, g);
-
-        printf("¿Desea agregar otra categoría de gasto? (si/no): ");
-        scanf("%7s", respuesta);
-    } while (strcasecmp(respuesta, "si") == 0 || strcasecmp(respuesta, "sí") == 0);
-
-    printf("Ingrese monto ahorrado para %s: ", mes);
-    scanf("%d", &datosMes->ahorrado);
-
-    datosMes->modificado = 1;
-
-    printf("¡Movimiento financiero registrado para %s!\n", mes);
-}
 
 // Función para registrar movimiento financiero (sin presupuesto)
 void registrarMovimientoFinanciero(TreeMap *arbol) {
@@ -276,4 +222,5 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
     datosMes->modificado = 1;
 
     printf("¡Movimiento financiero registrado para %s!\n", mes);
+
 }
