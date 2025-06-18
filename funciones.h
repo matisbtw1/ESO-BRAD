@@ -18,6 +18,7 @@ typedef struct {
 typedef struct {
     char nombreMes[12];
     int ingresos;
+    int presupuesto;
     int ahorrado;
     int totalGastos;
     int modificado;
@@ -31,5 +32,6 @@ void mostrarMovimientosPorMes(TreeMap *arbol);
 void mostrarMenu();
 int mes_a_numero(const char* mes);
 int lower_than_mes(void* key1, void* key2);
+void registrarMovimientoFinanciero(TreeMap *arbol);
 
 #endif

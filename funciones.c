@@ -174,3 +174,62 @@ int lower_than_mes(void* key1, void* key2) {
 }
 
 // ...existing code...
+
+// Función para registrar movimiento financiero
+void registrarMovimientoFinanciero(TreeMap *arbol) {
+    char mes[32];
+    printf("Ingrese el mes (ejemplo: enero): ");
+    scanf("%31s", mes);
+
+    // Buscar si el mes ya existe
+    MesFinanciero *datosMes = searchTreeMap(arbol, mes) ? (MesFinanciero*)searchTreeMap(arbol, mes)->value : NULL;
+
+    if (!datosMes) {
+        // Si no existe, crear uno nuevo
+        datosMes = (MesFinanciero*)malloc(sizeof(MesFinanciero));
+        strcpy(datosMes->nombreMes, mes);
+        datosMes->ingresos = 0;
+        datosMes->presupuesto = 0;
+        datosMes->ahorrado = 0;
+        datosMes->totalGastos = 0;
+        datosMes->modificado = 1;
+        datosMes->listaGastos = list_create();
+        insertTreeMap(arbol, datosMes->nombreMes, datosMes);
+    }
+
+    printf("Ingrese el presupuesto para %s: ", mes);
+    scanf("%d", &datosMes->presupuesto);
+
+    printf("Ingrese el ingreso para %s: ", mes);
+    scanf("%d", &datosMes->ingresos);
+
+    int numGastos;
+    printf("¿Cuántos gastos desea ingresar para %s?: ", mes);
+    scanf("%d", &numGastos);
+
+    datosMes->totalGastos = 0;
+    // Limpiar lista de gastos anterior si existe
+    while (list_first(datosMes->listaGastos)) {
+        Gasto *g = list_popFront(datosMes->listaGastos);
+        free(g);
+    }
+
+    for (int i = 0; i < numGastos; i++) {
+        Gasto *g = (Gasto*)malloc(sizeof(Gasto));
+        printf("Ingrese nombre de la categoría de gasto #%d: ", i+1);
+        scanf("%63s", g->categoria);
+        printf("Ingrese monto de %s: ", g->categoria);
+        scanf("%d", &g->monto);
+        printf("¿Pagado o Por pagar?: ");
+        scanf("%15s", g->estado);
+        datosMes->totalGastos += g->monto;
+        list_pushBack(datosMes->listaGastos, g);
+    }
+
+    printf("Ingrese monto ahorrado para %s: ", mes);
+    scanf("%d", &datosMes->ahorrado);
+
+    datosMes->modificado = 1;
+
+    printf("¡Movimiento financiero registrado para %s!\n", mes);
+}

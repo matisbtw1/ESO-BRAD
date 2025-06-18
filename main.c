@@ -50,6 +50,7 @@ int main()
            printf("Registrar movimiento financiero\n");
            // Aquí iría la lógica para registrar un movimiento financiero
            cargarMovimientosDesdeCSV(arbol, "finanzas_2025.csv"); // Cargar movimientos desde un archivo CSV
+           registrarMovimientoFinanciero(arbol); // Registrar un nuevo movimiento financiero
            break;
        case 2:
            printf("Ver resumen mensual\n");
