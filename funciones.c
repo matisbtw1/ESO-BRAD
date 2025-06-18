@@ -202,7 +202,6 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         insertTreeMap(arbol, datosMes->nombreMes, datosMes);
     }
 
-<<<<<<< HEAD
 
 
 =======
