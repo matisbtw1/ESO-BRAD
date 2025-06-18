@@ -189,7 +189,6 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         datosMes = (MesFinanciero*)malloc(sizeof(MesFinanciero));
         strcpy(datosMes->nombreMes, mes);
         datosMes->ingresos = 0;
-        datosMes->presupuesto = 0;
         datosMes->ahorrado = 0;
         datosMes->totalGastos = 0;
         datosMes->modificado = 1;
