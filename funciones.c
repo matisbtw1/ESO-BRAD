@@ -175,52 +175,93 @@ int lower_than_mes(void* key1, void* key2) {
 
 // ...existing code...
 
-
+const char* nombresMeses[12] = {
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+};
 // Función para registrar movimiento financiero (sin presupuesto)
 void registrarMovimientoFinanciero(TreeMap *arbol) {
-    char mes[32];
-    printf("Ingrese el mes (ejemplo: enero): ");
-    scanf("%31s", mes);
-
-    // Buscar si el mes ya existe
-    Pair *par = searchTreeMap(arbol, mes);
-    if (!par) {
-        printf("El mes '%s' no existe. Debe crearlo primero.\n", mes);
-        return;
+    printf("Seleccione el mes para registrar/modificar:\n");
+    for (int i = 0; i < 12; i++) {
+        printf("%2d. %s\n", i + 1, nombresMeses[i]);
     }
-    MesFinanciero *datosMes = (MesFinanciero*)par->value;
-
-    printf("Ingrese el ingreso para %s: ", mes);
-    scanf("%d", &datosMes->ingresos);
-
-    // Limpiar lista de gastos anterior si existe
-    datosMes->totalGastos = 0;
-    while (list_first(datosMes->listaGastos)) {
-        Gasto *g = list_popFront(datosMes->listaGastos);
-        free(g);
-    }
-
-    char respuesta[8];
+    int opcionMes = 0;
     do {
-        Gasto *g = (Gasto*)malloc(sizeof(Gasto));
-        printf("Ingrese nombre de la categoría de gasto: ");
-        scanf("%63s", g->categoria);
-        printf("Ingrese monto de %s: ", g->categoria);
-        scanf("%d", &g->monto);
-        printf("¿Pagado o Pendiente?: ");
-        scanf("%15s", g->estado);
+        printf("Ingrese el número del mes (1-12): ");
+        scanf("%d", &opcionMes);
+    } while (opcionMes < 1 || opcionMes > 12);
+
+    const char* mes = nombresMeses[opcionMes - 1];
+    Pair* par = searchTreeMap(arbol, (void*)mes);
+    MesFinanciero* datosMes = (MesFinanciero*)par->value;
+
+    if (!datosMes->modificado) {
+        printf("ingrese el ingreso del mes %s: ", mes);
+        scanf("%d", &datosMes->ingresos);
+        datosMes->ahorrado = datosMes->ingresos; // Inicialmente todo el ingreso se va a ahorrado
+    }
+    printf("Categorías actuales:\n");
+    int idx = 1;
+    Gasto* g = list_first(datosMes->listaGastos);
+    while (g) {
+        printf("%2d. %s | Monto: %d | Estado: %s\n", idx, g->categoria, g->monto, g->estado);
+        g = list_next(datosMes->listaGastos);
+        idx++;
+    }
+    int opcionGasto = 0;
+    while (1)
+    {
+        printf("Seleccione una categoría para modificar (0 para salir): ");
+        scanf("%d", &opcionGasto);
+        if (opcionGasto == 0) break;
+
+        if (opcionGasto < 1 || opcionGasto >= idx) {
+            printf("Opción inválida. Intente nuevamente.\n");
+            continue;
+        }
+
+        g = list_first(datosMes->listaGastos);
+        for (int i = 1; i < opcionGasto; i++) {
+            g = list_next(datosMes->listaGastos);
+        }
+
+        int nuevoMonto;
+        printf("Ingrese el monto para %s: ", g->categoria);
+        scanf("%d", &nuevoMonto);
+        g->monto = nuevoMonto;
+
+        //opcion para cambiar el estado del gasto en numero
+        int opcionEstado;
+        printf("Seleccione el estado del gasto:\n");
+        printf("1. Pendiente\n");
+        printf("2. Pagado\n");
+
+        do {
+            printf("Ingrese su opción: ");
+            scanf("%d", &opcionEstado);
+        } while (opcionEstado < 1 || opcionEstado > 2);
+        if (opcionEstado == 1) {
+            strcpy(g->estado, "Pendiente");
+        } else if (opcionEstado == 2) {
+            strcpy(g->estado, "Pagado");
+        }
+
+        // Actualizar total de gastos
+        
+
+        
+    }
+    g = list_first(datosMes->listaGastos);
+    while (g) {
         datosMes->totalGastos += g->monto;
-        list_pushBack(datosMes->listaGastos, g);
+        g = list_next(datosMes->listaGastos);
+    }
+    //mes ya modificado
+    datosMes->modificado = 1; // Marcar como modificado
+    printf("¡Movimiento financiero actualizado para %s!\n", mes);
 
-        printf("¿Desea agregar otra categoría de gasto? (si/no): ");
-        scanf("%7s", respuesta);
-    } while (strcasecmp(respuesta, "si") == 0 || strcasecmp(respuesta, "sí") == 0);
-
-    printf("Ingrese monto ahorrado para %s: ", mes);
-    scanf("%d", &datosMes->ahorrado);
-
-    datosMes->modificado = 1;
-
-    printf("¡Movimiento financiero registrado para %s!\n", mes);
 
 }
+
+// el ingreso se ira a ahorrado y de ahi se descontara lo que tenga que pagarse para cada cuenta, el ahorrado tendra dinero que permitira pagar a futuro
+// si marco wea pagado que se desucente del ahorrado, si no se paga se queda en pendiente y no se descuenta del ahorrado
