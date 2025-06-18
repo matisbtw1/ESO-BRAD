@@ -123,11 +123,12 @@ void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
 
         // Insertar en árbol
         insertTreeMap(arbol, mes->nombreMes, mes);
-        for (int i = 0; i < totalColumnas; i++) {
-            printf(encabezados[i]); // Liberar memoria de los encabezados
-        }
+        
+        
     }
-
+        for (int i = 0; encabezados[i] != NULL ; i++) {
+            free(encabezados[i]); // Liberar memoria de los encabezados
+        }
     fclose(archivo);
 }
 
