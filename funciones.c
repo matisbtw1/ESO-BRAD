@@ -116,7 +116,7 @@ void mostrarMovimientosPorMes(TreeMap *arbol) {
     char *mes = (char *)par->key;
     List *lista = (List *)par->value;
 
-    printf("📅 Mes: %s\n", mes);
+    printf("Mes: %s\n", mes);
     printf("-----------------------------------\n");
 
     Movimiento *mov = list_first(lista);
