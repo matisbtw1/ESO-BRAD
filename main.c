@@ -103,6 +103,8 @@ int main()
            printf("Opción no válida. Intente nuevamente.\n");
       }
    }
+
+   return 0;
 }
 
 
