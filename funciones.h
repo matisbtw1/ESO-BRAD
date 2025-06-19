@@ -13,6 +13,7 @@ typedef struct {
     char categoria[20];
     int monto;
     char estado[15]; // "pendiente", "pagado", etc.
+    bool modificado; // Indica si el gasto ha sido modificado
 } Gasto;
 
 typedef struct {

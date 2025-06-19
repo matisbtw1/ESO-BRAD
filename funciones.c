@@ -117,6 +117,7 @@ void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
             strcpy(g->categoria, encabezados[i]); // Nombre viene del header
             g->monto = atoi(campos[i]);
             strcpy(g->estado, campos[i + 1]);
+            g->modificado = false;
 
             list_pushBack(mes->listaGastos, g);
         }
@@ -181,7 +182,10 @@ const char* nombresMeses[12] = {
 };
 // Función para registrar movimiento financiero (sin presupuesto)
 void registrarMovimientoFinanciero(TreeMap *arbol) {
-    printf("Seleccione el mes para registrar/modificar:\n");
+    printf("Seleccione el mes para registrar:\n");
+    printf("NOTA: Una vez modificado, el mes se marcará como cerrado.\n");
+    printf("ADVERTENCIA: Si el mes ya ha sido cerrado, no se podrá modificar.\n");
+    printf("Si desea modificar el mes deberá eliminarlo y registrarlo nuevamente.\n");
     for (int i = 0; i < 12; i++) {
         printf("%2d. %s\n", i + 1, nombresMeses[i]);
     }
@@ -194,11 +198,27 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
     const char* mes = nombresMeses[opcionMes - 1];
     Pair* par = searchTreeMap(arbol, (void*)mes);
     MesFinanciero* datosMes = (MesFinanciero*)par->value;
+    if (datosMes -> modificado == 1) {
+        printf("El mes %s ya ha sido cerrado. Si desea modificar el mes deberá eliminarlo y registrarlo nuevamente.\n", mes);
+        return;
+    }
 
-    if (!datosMes->modificado) {
-        printf("ingrese el ingreso del mes %s: ", mes);
-        scanf("%d", &datosMes->ingresos);
-        datosMes->ahorrado = datosMes->ingresos; // Inicialmente todo el ingreso se va a ahorrado
+    while (true) {
+
+        int ingresosAux = 0;
+        printf("Ingrese el monto de ingresos para el mes %s: ", mes);
+        scanf("%d", &ingresosAux);
+        printf("Confirma el ingreso de %d para el mes %s? (1=Sí, 0=No): ", ingresosAux, mes);
+        int confirmarIngreso;
+        scanf("%d", &confirmarIngreso);
+        if (confirmarIngreso == 1) {
+            datosMes->ingresos += ingresosAux;
+            datosMes->ahorrado += ingresosAux; // Aumentar el ahorro con los ingresos
+            printf("Ingreso de %d registrado para el mes %s.\n", ingresosAux, mes);
+        } else {
+            printf("Ingreso no confirmado.\n");
+        }
+        if (confirmarIngreso == 1) break;
     }
     printf("Categorías actuales:\n");
     int idx = 1;
@@ -208,8 +228,8 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         g = list_next(datosMes->listaGastos);
         idx++;
     }
-    int opcionGasto = 0;
-    while (1)
+    int opcionGasto;
+    while (true)
     {
         printf("Seleccione una categoría para modificar (0 para salir): ");
         scanf("%d", &opcionGasto);
@@ -224,14 +244,26 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         for (int i = 1; i < opcionGasto; i++) {
             g = list_next(datosMes->listaGastos);
         }
+        if (g->modificado) {
+            printf("El gasto ya ha sido modificado. No se puede cambiar.\n");
+            continue;
+        }
+        while (true)
+        {
+            int nuevoMonto;
+            printf("Ingrese el nuevo monto para la categoría %s: ", g->categoria);
+            scanf("%d", &nuevoMonto);
+            printf("Confirma el cambio de monto a %d para la categoría %s? (1=Sí, 0=No): ", nuevoMonto, g->categoria);
+            int confirmarCambio;
+            scanf("%d", &confirmarCambio);
+            if (confirmarCambio == 1) {
+                g->monto = nuevoMonto;
+                datosMes->totalGastos += nuevoMonto; // Actualizar total de gastos
+            }
+            if (confirmarCambio == 1) break;
+        }
 
-        int nuevoMonto;
-        printf("Ingrese el monto para %s: ", g->categoria);
-        scanf("%d", &nuevoMonto);
-        g->monto = nuevoMonto;
-        
-
-        //opcion para cambiar el estado del gasto en numero
+         //opcion para cambiar el estado del gasto en numero
         int opcionEstado;
         printf("Seleccione el estado del gasto:\n");
         printf("1. Pendiente\n");
@@ -251,25 +283,12 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
                 continue; // No se puede pagar, salir del bucle
             }
             strcpy(g->estado, "Pagado");
-            datosMes->totalGastos += g->monto; // Actualizar total de gastos
-            datosMes->ahorrado -= g->monto; 
-            
+            datosMes->ahorrado -= g->monto; // Descontar del ahorrado
+            printf("Gasto marcado como pagado\n");
         }
-
-        // Actual
-
-        
     }
-    
-
-
-
-
-    //mes ya modificado
     datosMes->modificado = 1; // Marcar como modificado
-    printf("¡Movimiento financiero actualizado para %s!\n", mes);
-
-
+    printf("¡Movimiento financiero actualizado para %s!\n\n. El mes ha sido cerrado", mes);
 }
 
 // el ingreso se ira a ahorrado y de ahi se descontara lo que tenga que pagarse para cada cuenta, el ahorrado tendra dinero que permitira pagar a futuro
