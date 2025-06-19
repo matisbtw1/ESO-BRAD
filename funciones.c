@@ -372,6 +372,6 @@ void marcarGastoComoPagado(TreeMap *arbol) {
 }
 
 
-//si se accede a un mes no modificiado se sale del bucle, hay que hacer que se reintente si no se ha modificado el mes
+//si se accede a un mes no modificiado se sale del bucle, hay que hacer que se reintente si no se ha modificado el mes (YA LO ARREGLÉ XD)
 //podria solo mostrar cuentas que si se hayan registrado, o en su defecto no dejar marcar no registrados
 // crear logica de que que si quedan pendientes en un mes "cerrado" se vaya a "otros gastos" del proximo mes

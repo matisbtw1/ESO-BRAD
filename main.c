@@ -10,25 +10,39 @@
 #include    "funciones.h"
 
 /* MENÚ PRINCIPAL
+francis
 1. Registrar movimiento financiero
    1.1 Registrar ingreso 
    1.2 Registrar gasto 
+alfonso
+aca separar el ver por mes o los ultimos 3 meses etc
 2. Ver resumen mensual
    2.1 Ver totales y saldo
    2.2 Ver porcentajes por categoría
    2.3 Ver excedente mensual
+por eliminar y/o modificar
 3. Presupuesto mensual 
    3.1 Establecer presupuesto
    3.2 Ver presupuesto vs gasto
+matis
 4. Gastos planificados
    4.1 Ver gastos pendientes
    4.2 Marcar gasto como pagado
+jp
 5. Historial y análisis
+CUALKIER ANALISIS matematico Q SEA UTIL
    5.1 Ver meses anteriores
    5.2 Comparar meses
    5.3 Tendencias de gasto
-6. Excedente mensual
+
+entre todos
+6. cuenta de ahorro
    6.1 Revisar cuenta de ahorro
+
+interfaz y arreglar prints 
+
+
+
 
 0. Salir
 */
