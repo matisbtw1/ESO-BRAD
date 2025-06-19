@@ -280,3 +280,98 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
 // Ingreso se puedan modificar
 // Gastos se puedan modificar
 // preguntar si quiere aceptar el ingreso del gasto o no, si no se acepta se deja como pendiente si no queda como tal (no se puede modificar el estado de un gasto pagado)
+
+
+void marcarGastoComoPagado(TreeMap *arbol) {
+   
+    int opcionMes;
+    const char* nombresMeses[12] = {
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    };
+
+    MesFinanciero *datosMes = NULL;
+    do {
+        printf("Ingrese 0 para volver al menú principal.\n");
+        printf("Seleccione el mes para marcar gasto como pagado:\n");
+        for (int i = 0; i < 12; i++) {
+            printf("%2d. %s\n", i + 1, nombresMeses[i]);
+        }
+        printf("Ingrese el número del mes (1-12): ");
+        scanf("%d", &opcionMes);
+
+        if (opcionMes == 0) {
+        printf("Volviendo al menú principal...\n");
+        return;
+        }
+        if (opcionMes < 1 || opcionMes > 12) {
+            printf("Opción inválida. Intente nuevamente.\n");
+            continue;
+        }
+
+        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[opcionMes - 1]);
+        if (!par) {
+            printf("El mes seleccionado no existe. Intente nuevamente.\n");
+            continue;
+        }
+
+        datosMes = (MesFinanciero*)par->value;
+        if (datosMes->modificado == 0) {
+            printf("El mes seleccionado no ha sido modificado. Seleccione otro mes.\n");
+            datosMes = NULL;
+        }
+    } while (datosMes == NULL);
+
+    Gasto* g = list_first(datosMes->listaGastos);
+    if (!g) {
+        printf("No hay gastos registrados para el mes %s.\n", datosMes);
+        return;
+    }
+
+    int idx = 1;
+    while (g) {
+        printf("%2d. %s | Monto: %d | Estado: %s\n", idx, g->categoria, g->monto, g->estado);
+        g = list_next(datosMes->listaGastos);
+        idx++;
+    }
+
+    int opcionGasto;
+    do {
+        printf("Seleccione el gasto a marcar como pagado (0 para salir): ");
+        scanf("%d", &opcionGasto);
+        if (opcionGasto == 0) break;
+
+        if (opcionGasto < 1 || opcionGasto >= idx) {
+            printf("Opción inválida. Intente nuevamente.\n");
+            continue;
+        }
+
+        g = list_first(datosMes->listaGastos);
+        for (int i = 1; i < opcionGasto; i++) {
+            g = list_next(datosMes->listaGastos);
+        }
+
+        if (strcmp(g->estado, "Pagado") == 0) {
+            printf("El gasto ya está marcado como pagado.\n");
+            continue;
+        }
+        if (datosMes->ahorrado < g->monto) {
+            printf("No hay suficiente dinero para pagar este gasto.\n");
+            strcpy(g->estado, "Pendiente");
+            printf("El gasto se ha dejado como pendiente.\n");
+            continue; // No se puede pagar, salir del bucle
+        }
+        strcpy(g->estado, "Pagado");
+        datosMes->totalGastos += g->monto; // Actualizar total de gastos
+        datosMes->ahorrado -= g->monto; // Descontar del ahorrado
+        printf("Gasto marcado como pagado: %s | Monto: %d\n", g->categoria, g->monto);
+    } while (opcionGasto != 0);
+    // Actualizar el mes como modificado
+    datosMes->modificado = 1; // Marcar como modificado
+
+}
+
+
+//si se accede a un mes no modificiado se sale del bucle, hay que hacer que se reintente si no se ha modificado el mes
+//podria solo mostrar cuentas que si se hayan registrado, o en su defecto no dejar marcar no registrados
+// crear logica de que que si quedan pendientes en un mes "cerrado" se vaya a "otros gastos" del proximo mes

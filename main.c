@@ -17,7 +17,7 @@
    2.1 Ver totales y saldo
    2.2 Ver porcentajes por categoría
    2.3 Ver excedente mensual
-3. Presupuesto mensual
+3. Presupuesto mensual 
    3.1 Establecer presupuesto
    3.2 Ver presupuesto vs gasto
 4. Gastos planificados
@@ -62,7 +62,8 @@ int main()
            break;
        case 4:
            printf("Gastos planificados\n");
-           // Aquí iría la lógica para manejar los gastos planificados
+            marcarGastoComoPagado(arbol); // Marcar un gasto como pagado o pendiente
+            mostrarMenu();
            break;
        case 5:
            printf("Historial y análisis\n");
