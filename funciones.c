@@ -106,7 +106,7 @@ void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
         mes->ingresos = atoi(campos[idxIngreso]);
         mes->ahorrado = atoi(campos[idxAhorrado]);
         mes->totalGastos = atoi(campos[idxTotalGastos]);
-        mes->modificado = strcmp(campos[idxModificado], "Sí") == 0 ? 1 : 0;
+        mes->modificado = strcmp(campos[idxModificado], "Si") == 0 ? 1 : 0;
         mes->listaGastos = list_create();
 
         // Leer gastos
@@ -144,6 +144,7 @@ void mostrarMovimientosPorMes(TreeMap *arbol) {
     printf("Ingresos: %d\n", mesFinanciero->ingresos);
     printf("Ahorro: %d\n", mesFinanciero->ahorrado);
     printf("Total Gastos: %d\n", mesFinanciero->totalGastos);
+    printf("Modificado: %s\n", mesFinanciero->modificado ? "Si" : "No");
     printf("-----------------------------------\n");
 
     List *lista = mesFinanciero->listaGastos;
