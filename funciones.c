@@ -309,6 +309,7 @@ void marcarGastoComoPagado(TreeMap *arbol) {
             continue;
         }
 
+
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[opcionMes - 1]);
         if (!par) {
             printf("El mes seleccionado no existe. Intente nuevamente.\n");
@@ -369,9 +370,59 @@ void marcarGastoComoPagado(TreeMap *arbol) {
     // Actualizar el mes como modificado
     datosMes->modificado = 1; // Marcar como modificado
 
-}
+// Lógica para mover pendientes a "Otros gastos" del próximo mes
+    int cerrarMes = 0;
+    printf("¿Desea cerrar el mes y mover los gastos pendientes al próximo mes? (1=Sí, 0=No): ");
+    scanf("%d", &cerrarMes);
+    if (cerrarMes == 1) {
+        int mesActual = mes_a_numero(datosMes->nombreMes) - 1;
+        int siguienteMes = (mesActual + 1) % 12;
+        Pair *parSig = searchTreeMap(arbol, (void*)nombresMeses[siguienteMes]);
+        if (!parSig) {
+            printf("El siguiente mes no existe en el sistema.\n");
+            return;
+        }
+        MesFinanciero *mesSig = (MesFinanciero*)parSig->value;
 
+        // Sumar todos los pendientes
+        int totalPendientes = 0;
+        List *listaActual = datosMes->listaGastos;
+        Gasto *gastoPendiente = list_first(listaActual);
+        while (gastoPendiente) {
+            if (strcmp(gastoPendiente->estado, "Pendiente") == 0) {
+                totalPendientes += gastoPendiente->monto;
+            }
+            gastoPendiente = list_next(listaActual);
+        }
+
+        if (totalPendientes > 0) {
+            // Buscar o crear "Otros gastos"
+            Gasto *otros = NULL;
+            Gasto *g = list_first(mesSig->listaGastos);
+            while (g) {
+                if (strcasecmp(g->categoria, "Otros gastos") == 0) {
+                    otros = g;
+                    break;
+                }
+                g = list_next(mesSig->listaGastos);
+            }
+            if (otros) {
+                otros->monto += totalPendientes;
+                strcpy(otros->estado, "Pendiente");
+            } else {
+                Gasto *nuevoGasto = malloc(sizeof(Gasto));
+                strcpy(nuevoGasto->categoria, "Otros gastos");
+                nuevoGasto->monto = totalPendientes;
+                strcpy(nuevoGasto->estado, "Pendiente");
+                list_pushBack(mesSig->listaGastos, nuevoGasto);
+            }
+            printf("Gastos pendientes (%d) sumados a 'Otros gastos' de %s.\n", totalPendientes, mesSig->nombreMes);
+        } else {
+            printf("No hay gastos pendientes para mover.\n");
+        }
+    }
+}
 
 //si se accede a un mes no modificiado se sale del bucle, hay que hacer que se reintente si no se ha modificado el mes (YA LO ARREGLÉ XD)
 //podria solo mostrar cuentas que si se hayan registrado, o en su defecto no dejar marcar no registrados
-// crear logica de que que si quedan pendientes en un mes "cerrado" se vaya a "otros gastos" del proximo mes
+// crear logica de que que si quedan pendientes en un mes "cerrado" se vaya a "otros gastos" del proximo mes (ya lo hice)
