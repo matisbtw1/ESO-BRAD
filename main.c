@@ -4,6 +4,7 @@
 #include    <ctype.h>
 #include    <stdbool.h>
 #include    <unistd.h>
+#include    <windows.h> 
 
 #include    "tdas/extra.h"
 #include    "tdas/list.h"
@@ -52,6 +53,7 @@ interfaz y arreglar prints
 
 int main()
 {
+    SetConsoleOutputCP(CP_UTF8); // Configurar la consola para UTF-8
    int opcion;
    TreeMap *arbol = createTreeMap(lower_than_mes); // Crear el árbol para almacenar los movimientos financieros
    mostrarMenu();
