@@ -16,7 +16,8 @@ void mostrarMenu() {
     printf("5. Historial y análisis\n");
     printf("6. Excedente mensual\n");
     printf("7. Ver cuenta de ahorro\n");
-    printf("8. Crear nuevo csv finanzas anio\n");
+    printf("8. Cargar archivo de finanzas\n");
+    printf("9. Crear nuevo csv finanzas anio\n");
     printf("0. Salir\n");
 }
 

@@ -55,13 +55,18 @@ int main()
    int opcion;
    TreeMap *arbol = createTreeMap(lower_than_mes); // Crear el árbol para almacenar los movimientos financieros
    mostrarMenu();
+   bool cargado = false; // Variable para verificar si se ha cargado un archivo CSV
    while (true){
    scanf("%d", &opcion);
-   switch (opcion) {
+   switch (opcion) { 
        case 1:
+           if (!cargado) 
+           {
+            printf("primero carga un archivo de finanzas\n");
+            break;
+           }
            printf("Registrar movimiento financiero\n");
            // Aquí iría la lógica para registrar un movimiento financiero
-           cargarMovimientosDesdeCSV(arbol, "finanzas_2025.csv"); // Cargar movimientos desde un archivo CSV
            registrarMovimientoFinanciero(arbol); // Registrar un nuevo movimiento financiero
            break;
        case 2:
@@ -92,6 +97,29 @@ int main()
            // Aquí iría la lógica para ver la cuenta de ahorro
            break;
        case 8:
+           if (cargado) 
+           {
+            printf("Ya se ha cargado un archivo de finanzas.\n");
+            break;
+           }
+           printf("Ingresa el año para cargar archivo de finanzas: ");
+           int anyo;
+           scanf("%d", &anyo);
+           
+           char leerArchivo[100];
+           sprintf(leerArchivo, "finanzas_%d.csv", anyo);
+           
+           FILE *verificar = fopen(leerArchivo, "r");
+           if (!verificar) {
+               printf("No se pudo abrir el archivo %s. Asegúrate de que exista.\n", leerArchivo);
+               break;
+           }
+           fclose(verificar);
+           cargado = true; // Marcar que se ha cargado un archivo CSV
+           cargarMovimientosDesdeCSV(arbol, leerArchivo); // Cargar movimientos desde un archivo CSV
+           printf("Archivo de finanzas cargado correctamente.\n");
+           break;
+       case 9:
            printf("Crear nuevo csv finanzas anio\n");
            int anio;
            printf("Ingresa el año para crear archivo de finanzas: ");
