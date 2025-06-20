@@ -37,6 +37,6 @@ void marcarGastoComoPagado(TreeMap *arbol);
 
 void tolowercase(char *str);
 void guardarCSV(TreeMap *arbol, const char *nombreArchivo);
-void recalcularTotalGastos(MesFinanciero *datosMes);
+
 
 #endif

@@ -342,17 +342,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
 // Ingreso se puedan modificar
 // Gastos se puedan modificar
 // preguntar si quiere aceptar el ingreso del gasto o no, si no se acepta se deja como pendiente si no queda como tal (no se puede modificar el estado de un gasto pagado)
-void recalcularTotalGastos(MesFinanciero *datosMes) {
-    int total = 0;
-    Gasto *g = list_first(datosMes->listaGastos);
-    while (g) {
-        if (strcmp(g->estado, "Pagado") == 0) {
-            total += g->monto;
-        }
-        g = list_next(datosMes->listaGastos);
-    }
-    datosMes->totalGastos = total;
-}
+
 
 void marcarGastoComoPagado(TreeMap *arbol) {
    
@@ -507,4 +497,5 @@ void marcarGastoComoPagado(TreeMap *arbol) {
 // crear logica de que que si quedan pendientes en un mes "cerrado" se vaya a "otros gastos" del proximo mes (ya lo hice)
 
 // despues de usar la funcion marcar te pregunta si deseas cerrar el mes pero no sirve de nada si el mes ya se c0erro al haber usado la
-//funcion 1 registrar mov financiero. Creo que al menos en esta funcion no deberia de hacerse esa pregunta
+//funcion 1 registrar mov financiero. Creo que al menos en esta funcion no deberia de hacerse esa pregunta, solo preguntar si desea
+//mover los p endites al siguiente mes, y si no hay pendientes no hacer nada, o si no hay gastos no hacer nada
