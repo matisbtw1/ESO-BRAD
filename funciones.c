@@ -15,7 +15,7 @@ void mostrarMenu() {
     printf("4. Gastos planificados\n");
     printf("5. Historial y análisis\n");
     printf("6. Excedente mensual\n");
-    printf("7. Ver cuenta de ahorro\n");
+    printf("7. Selecciona Meses para ver el porcentaje de Meses\n");
     printf("8. Cargar archivo de finanzas\n");
     printf("9. Crear nuevo csv finanzas anio\n");
     printf("10. Guardar archivo de finanzas\n");
@@ -491,6 +491,95 @@ void marcarGastoComoPagado(TreeMap *arbol) {
         }
     }
 }
+
+
+
+void mostrarPorcentajesPorCategorias(TreeMap *arbol)
+{
+    int seleccionado[12] = {0}; 
+    int cantidad = 0;
+
+    printf("Seleccione los meses para mostrar porcentajes por categorías (0 para terminar):\n");
+
+    for (int i = 0; i < 12; i++) {
+        printf("%2d. %s\n", i + 1, nombresMeses[i]);
+    }
+
+    while (1)
+    {
+        int opcion;
+        printf("Ingrese el número del mes (1-12) o 0 para terminar: ");
+        scanf("%d", &opcion);
+
+        if (opcion == 0) break;
+
+        if (opcion < 1 || opcion > 12) {
+            printf("Opción inválida. Intente nuevamente.\n");
+            continue;
+        }
+
+        bool yaSeleccionado = false;
+        for (int j = 0; j < cantidad; j++) {
+            if (seleccionado[j] == opcion) {
+                yaSeleccionado = true;
+                break;
+            }
+        }
+
+        if (yaSeleccionado) {
+            printf("El mes %s ya ha sido seleccionado.\n", nombresMeses[opcion - 1]);
+        } else {
+            seleccionado[cantidad++] = opcion;
+            printf("Mes %s seleccionado.\n", nombresMeses[opcion - 1]);
+        }
+    }
+
+    if (cantidad == 0) {
+        printf("No se han seleccionado meses. Saliendo...\n");
+        return;
+    }
+
+    printf("\n--- Porcentajes por Categorías ---\n");
+
+    for (int i = 0; i < cantidad; i++) {
+        int mesSeleccionado = seleccionado[i] - 1;
+        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[mesSeleccionado]);
+
+        if (par == NULL) {
+            printf("El mes %s no tiene datos registrados.\n", nombresMeses[mesSeleccionado]);
+            continue;
+        }
+
+        MesFinanciero *mes = (MesFinanciero*)par->value;
+
+        if (mes->totalGastos == 0) {
+            printf("\n[%s] No hay gastos registrados.\n", mes->nombreMes);
+            continue;
+        }
+
+        printf("\nResumen para %s:\n", mes->nombreMes);
+        printf("Total Gastos: %d\n", mes->totalGastos);
+        printf("=========================\n");
+
+        Gasto *gasto = list_first(mes->listaGastos);
+        while (gasto) {
+            if (strcasecmp(gasto->estado, "Pagado") == 0) {
+                float porcentaje = (float)gasto->monto / mes->totalGastos * 100;
+                printf("Categoría: %-15s | Monto: %6d | Porcentaje: %.2f%%\n",
+                       gasto->categoria, gasto->monto, porcentaje);
+            }
+            gasto = list_next(mes->listaGastos);
+        }
+    }
+}
+
+
+
+
+
+
+
+
 
 //si se accede a un mes no modificiado se sale del bucle, hay que hacer que se reintente si no se ha modificado el mes (YA LO ARREGLÉ XD)
 //podria solo mostrar cuentas que si se hayan registrado, o en su defecto no dejar marcar no registrados

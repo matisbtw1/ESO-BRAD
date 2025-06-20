@@ -95,7 +95,8 @@ int main()
            // Aquí iría la lógica para manejar el excedente mensual
            break;
        case 7:
-           printf("Ver cuenta de ahorro\n");
+           printf("Mostrando porcentajes por categorías\n");
+           mostrarPorcentajesPorCategorias(arbol); 
            // Aquí iría la lógica para ver la cuenta de ahorro
            break;
        case 8:

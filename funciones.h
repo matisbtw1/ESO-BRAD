@@ -34,6 +34,9 @@ int mes_a_numero(const char* mes);
 int lower_than_mes(void* key1, void* key2);
 void registrarMovimientoFinanciero(TreeMap *arbol);
 void marcarGastoComoPagado(TreeMap *arbol);
+void mostrarPorcentajesPorCategorias(TreeMap *arbol);
+
+
 
 void tolowercase(char *str);
 void guardarCSV(TreeMap *arbol, const char *nombreArchivo);
