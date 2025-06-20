@@ -300,7 +300,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
             scanf("%d", &confirmarCambio);
             if (confirmarCambio == 1) {
                 g->monto = nuevoMonto;
-                datosMes->totalGastos += nuevoMonto; // Actualizar total de gastos
+                
             }
             if (confirmarCambio == 1) break;
         }
@@ -326,6 +326,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
             }
             strcpy(g->estado, "Pagado");
             datosMes->ahorrado -= g->monto; // Descontar del ahorrado
+            datosMes->totalGastos += g->monto; // Aumentar el total de gastos pagados
             printf("Gasto marcado como pagado\n");
         }
     }
@@ -341,12 +342,21 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
 // Ingreso se puedan modificar
 // Gastos se puedan modificar
 // preguntar si quiere aceptar el ingreso del gasto o no, si no se acepta se deja como pendiente si no queda como tal (no se puede modificar el estado de un gasto pagado)
-
+void recalcularTotalGastos(MesFinanciero *datosMes) {
+    int total = 0;
+    Gasto *g = list_first(datosMes->listaGastos);
+    while (g) {
+        if (strcmp(g->estado, "Pagado") == 0) {
+            total += g->monto;
+        }
+        g = list_next(datosMes->listaGastos);
+    }
+    datosMes->totalGastos = total;
+}
 
 void marcarGastoComoPagado(TreeMap *arbol) {
    
     int opcionMes;
-
     MesFinanciero *datosMes = NULL;
     do {
         printf("Ingrese 0 para volver al menú principal.\n");
@@ -358,14 +368,13 @@ void marcarGastoComoPagado(TreeMap *arbol) {
         scanf("%d", &opcionMes);
 
         if (opcionMes == 0) {
-        printf("Volviendo al menú principal...\n");
-        return;
+            printf("Volviendo al menú principal...\n");
+            return;
         }
         if (opcionMes < 1 || opcionMes > 12) {
             printf("Opción inválida. Intente nuevamente.\n");
             continue;
         }
-
 
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[opcionMes - 1]);
         if (!par) {
@@ -380,22 +389,31 @@ void marcarGastoComoPagado(TreeMap *arbol) {
         }
     } while (datosMes == NULL);
 
-    Gasto* g = list_first(datosMes->listaGastos);
-    if (!g) {
-        printf("No hay gastos registrados para el mes %s.\n", datosMes);
-        return;
-    }
-
+    // Mostrar solo gastos pendientes
     int idx = 1;
+    int indicesPendientes[100]; // Asume máximo 100 gastos pendientes por mes
+    Gasto* g = list_first(datosMes->listaGastos);
+    printf("Gastos pendientes:\n");
+    int hayPendientes = 0;
+    int i = 1;
     while (g) {
-        printf("%2d. %s | Monto: %d | Estado: %s\n", idx, g->categoria, g->monto, g->estado);
+        if (strcmp(g->estado, "Pendiente") == 0) {
+            printf("%2d. %s | Monto: %d | Estado: %s\n", idx, g->categoria, g->monto, g->estado);
+            indicesPendientes[idx] = i; // Guarda el índice real en la lista
+            idx++;
+            hayPendientes = 1;
+        }
         g = list_next(datosMes->listaGastos);
-        idx++;
+        i++;
+    }
+    if (!hayPendientes) {
+        printf("No hay gastos pendientes para el mes seleccionado.\n");
+        return;
     }
 
     int opcionGasto;
     do {
-        printf("Seleccione el gasto a marcar como pagado (0 para salir): ");
+        printf("Seleccione el gasto pendiente a marcar como pagado (0 para salir): ");
         scanf("%d", &opcionGasto);
         if (opcionGasto == 0) break;
 
@@ -404,8 +422,10 @@ void marcarGastoComoPagado(TreeMap *arbol) {
             continue;
         }
 
+        // Buscar el gasto pendiente correspondiente
         g = list_first(datosMes->listaGastos);
-        for (int i = 1; i < opcionGasto; i++) {
+        int realIdx = indicesPendientes[opcionGasto];
+        for (int j = 1; j < realIdx; j++) {
             g = list_next(datosMes->listaGastos);
         }
 
@@ -417,15 +437,17 @@ void marcarGastoComoPagado(TreeMap *arbol) {
             printf("No hay suficiente dinero para pagar este gasto.\n");
             strcpy(g->estado, "Pendiente");
             printf("El gasto se ha dejado como pendiente.\n");
-            continue; // No se puede pagar, salir del bucle
+            continue;
         }
         strcpy(g->estado, "Pagado");
-        datosMes->totalGastos += g->monto; // Actualizar total de gastos
-        datosMes->ahorrado -= g->monto; // Descontar del ahorrado
         printf("Gasto marcado como pagado: %s | Monto: %d\n", g->categoria, g->monto);
+        datosMes->ahorrado -= g->monto; // Descontar del ahorrado
+        //aumentar el total de gastos pagados
+        datosMes->totalGastos += g->monto;
     } while (opcionGasto != 0);
-    // Actualizar el mes como modificado
-    datosMes->modificado = 1; // Marcar como modificado
+
+
+    datosMes->modificado = 1;
 
 // Lógica para mover pendientes a "Otros gastos" del próximo mes
     int cerrarMes = 0;
@@ -483,3 +505,6 @@ void marcarGastoComoPagado(TreeMap *arbol) {
 //si se accede a un mes no modificiado se sale del bucle, hay que hacer que se reintente si no se ha modificado el mes (YA LO ARREGLÉ XD)
 //podria solo mostrar cuentas que si se hayan registrado, o en su defecto no dejar marcar no registrados
 // crear logica de que que si quedan pendientes en un mes "cerrado" se vaya a "otros gastos" del proximo mes (ya lo hice)
+
+// despues de usar la funcion marcar te pregunta si deseas cerrar el mes pero no sirve de nada si el mes ya se c0erro al haber usado la
+//funcion 1 registrar mov financiero. Creo que al menos en esta funcion no deberia de hacerse esa pregunta
