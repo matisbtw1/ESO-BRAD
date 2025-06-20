@@ -36,5 +36,6 @@ void registrarMovimientoFinanciero(TreeMap *arbol);
 void marcarGastoComoPagado(TreeMap *arbol);
 
 void tolowercase(char *str);
+void guardarCSV(TreeMap *arbol, const char *nombreArchivo);
 
 #endif

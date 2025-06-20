@@ -140,6 +140,10 @@ int main()
                copiarArchivoCSV("plantilla.csv", nombreArchivo);
             }
            break;
+       case 10:
+           printf("Guardar archivo de finanzas\n");
+           guardarCSV(arbol, "finanzas_2025.csv"); // Guardar los movimientos financieros en un archivo CSV
+           break;
        case 0:
            printf("Salir del programa\n");
            return 0; // Salir del programa

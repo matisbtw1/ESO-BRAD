@@ -18,6 +18,7 @@ void mostrarMenu() {
     printf("7. Ver cuenta de ahorro\n");
     printf("8. Cargar archivo de finanzas\n");
     printf("9. Crear nuevo csv finanzas anio\n");
+    printf("10. Guardar archivo de finanzas\n");
     printf("0. Salir\n");
 }
 
@@ -182,6 +183,45 @@ const char* nombresMeses[12] = {
     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
 };
+
+const char* categoriasGastos[12] = {
+    "Agua", "Luz", "Gas", "Alimentacion", "Vivienda",
+    "Transporte", "Conectividad", "Vestuario", "Salud", "Otros Gastos", NULL
+};
+
+void guardarCSV(TreeMap *arbol, const char *nombreArchivo) {
+    FILE *archivo = fopen(nombreArchivo, "w");
+    if (!archivo) {
+        printf("Error al abrir el archivo para guardar.\n");
+        return;
+    }
+    // Escribir encabezados
+    fprintf(archivo, "Mes,Ingreso,Ahorrado");
+    for (int i = 0; categoriasGastos[i] != NULL; i++) {
+        fprintf(archivo, ",%s, Estado", categoriasGastos[i]);
+    }
+    fprintf(archivo, ",Total Gastos,Modificado\n");
+
+    //recorrer el árbol y escribir los datos
+    Pair *par = firstTreeMap(arbol);
+    while (par != NULL) {
+        MesFinanciero *mes = (MesFinanciero *)par->value;
+        fprintf(archivo, "%s,%d,%d", mes->nombreMes, mes->ingresos, mes->ahorrado);
+
+        // Escribir gastos
+        Gasto *gasto = list_first(mes->listaGastos);
+        while (gasto != NULL) {
+            fprintf(archivo, ",%d,%s", gasto->monto, gasto->estado);
+            gasto = list_next(mes->listaGastos);
+        }
+
+        fprintf(archivo, ",%d,%s\n", mes->totalGastos, mes->modificado ? "Si" : "No");
+        par = nextTreeMap(arbol);
+    }
+    fclose(archivo);
+    printf("Datos guardados en %s\n", nombreArchivo);
+}
+
 // Función para registrar movimiento financiero (sin presupuesto)
 void registrarMovimientoFinanciero(TreeMap *arbol) {
     printf("Seleccione el mes para registrar:\n");
@@ -290,7 +330,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         }
     }
     datosMes->modificado = 1; // Marcar como modificado
-    printf("¡Movimiento financiero actualizado para %s!\n\n. El mes ha sido cerrado", mes);
+    printf("¡Movimiento financiero actualizado para %s!\nEl mes ha sido cerrado\n", mes);
 }
 
 // el ingreso se ira a ahorrado y de ahi se descontara lo que tenga que pagarse para cada cuenta, el ahorrado tendra dinero que permitira pagar a futuro
@@ -306,10 +346,6 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
 void marcarGastoComoPagado(TreeMap *arbol) {
    
     int opcionMes;
-    const char* nombresMeses[12] = {
-        "enero", "febrero", "marzo", "abril", "mayo", "junio",
-        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-    };
 
     MesFinanciero *datosMes = NULL;
     do {
