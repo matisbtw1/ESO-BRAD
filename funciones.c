@@ -170,6 +170,7 @@ void mostrarXmeses(TreeMap *arbol) {
     int mostrados = 0;
     for (int i = indiceMesActual; i >= 0 && mostrados < x; i--) {
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
+        mostrados++;
         if (par == NULL) {
             printf("[%s] No hay datos registrados para este mes.\n", nombresMeses[i]);
             continue;
@@ -197,7 +198,7 @@ void mostrarXmeses(TreeMap *arbol) {
             printf("No hay gastos registrados para este mes.\n");
         }
         printf("--------------------------------------\n");
-        mostrados++;
+        
     }
 }
 void subMenuMostrarMovimientos(TreeMap *arbol){
