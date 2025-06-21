@@ -70,6 +70,7 @@ int main()
            printf("Registrar movimiento financiero\n");
            // Aquí iría la lógica para registrar un movimiento financiero
            registrarMovimientoFinanciero(arbol); // Registrar un nuevo movimiento financiero
+           mostrarMenu(); // Mostrar el menú después de registrar un movimiento
            break;
        case 2:
            printf("Ver resumen mensual\n");
@@ -82,10 +83,9 @@ int main()
            // Aquí iría la lógica para manejar el presupuesto mensual
            break;
        case 4:
-           printf("Gastos planificados\n");
-            marcarGastoComoPagado(arbol); // Marcar un gasto como pagado o pendiente
+            modificarGasto(arbol); // Modificar un gasto existente
             mostrarMenu();
-           break;
+            break;
        case 5:
            printf("Historial y análisis\n");
            // Aquí iría la lógica para el historial y análisis
