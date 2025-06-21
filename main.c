@@ -75,7 +75,11 @@ int main()
        case 2:
            printf("Ver resumen mensual\n");
            // Aquí iría la lógica para ver el resumen mensual
-              mostrarMovimientosPorMes(arbol); // Mostrar los movimientos por mes
+              subMenuMostrarMovimientos(arbol); // Mostrar los movimientos financieros por mes
+              // sub menu que hace llamado a las distinas funciones de visualizacion de los movimientos financieros
+              
+              
+              
               mostrarMenu();
            break;
        case 3:

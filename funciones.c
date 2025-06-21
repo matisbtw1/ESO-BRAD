@@ -7,6 +7,16 @@
 #include "tdas/list.h"
 #include "funciones.h"
 
+const char* nombresMeses[12] = {
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+};
+
+const char* categoriasGastos[12] = {
+    "Agua", "Luz", "Gas", "Alimentacion", "Vivienda",
+    "Transporte", "Conectividad", "Vestuario", "Salud", "Otros Gastos", NULL
+};
+
 void mostrarMenu() {
     printf("Menu de opciones:\n");
     printf("1. Registrar movimiento financiero\n");
@@ -135,6 +145,73 @@ void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
     fclose(archivo);
 }
 
+void subMenuMostrarMovimientos(TreeMap *arbol){
+// sub menu que hace llamado a las distinas funciones de visualizacion de los movimientos financieros
+    int opcion;
+    do {
+        printf("Submenú de movimientos financieros:\n");
+        printf("1. Mostrar movimientos año\n");
+        printf("2. Mostrar mes actual\n");
+        printf("3. Mostrar ultimos X meses\n");
+        printf("0. Volver al menú principal\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                mostrarMovimientosPorMes(arbol);
+                break;
+            case 2:
+                mostrarMesActual(arbol);
+                break;
+            case 3:
+                //mostrarXmeses(arbol);
+                break;
+            case 0:
+                printf("Volviendo al menú principal...\n");
+                break;
+            default:
+                printf("Opción no válida. Intente nuevamente.\n");
+        }
+    } while (opcion != 0);
+
+}
+void mostrarMesActual(TreeMap *arbol) {
+    // Buscar el último mes modificado (el más reciente)
+    MesFinanciero *mesActual = NULL;
+    int indiceMesActual = -1;
+    for (int i = 11; i >= 0; i--) {
+        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
+        if (par != NULL) {
+            MesFinanciero *mes = (MesFinanciero*)par->value;
+            if (mes->modificado == 1) {
+                mesActual = mes;
+                indiceMesActual = i;
+                break;
+            }
+        }
+    }
+    if (mesActual == NULL) {
+        printf("No hay meses modificados para mostrar.\n");
+        return;
+    }
+
+    printf("\n--- Información del mes actual: %s ---\n", mesActual->nombreMes);
+    printf("Categorías registradas:\n");
+    int hayGastos = 0;
+    Gasto *g = list_first(mesActual->listaGastos);
+    while (g) {
+        printf(" - %s | Monto: %d | Estado: %s\n", g->categoria, g->monto, g->estado);
+        hayGastos = 1;
+        g = list_next(mesActual->listaGastos);
+    }
+    if (!hayGastos) {
+        printf("No hay gastos registrados para este mes.\n");
+    }
+    printf("Total gastado: %d\n", mesActual->totalGastos);
+    printf("Monto ahorrado: %d\n", mesActual->ahorrado);
+    printf("--------------------------------------\n");
+}
 void mostrarMovimientosPorMes(TreeMap *arbol) {
   Pair *par = firstTreeMap(arbol);
 
@@ -179,15 +256,6 @@ int lower_than_mes(void* key1, void* key2) {
 
 // ...existing code...
 
-const char* nombresMeses[12] = {
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-};
-
-const char* categoriasGastos[12] = {
-    "Agua", "Luz", "Gas", "Alimentacion", "Vivienda",
-    "Transporte", "Conectividad", "Vestuario", "Salud", "Otros Gastos", NULL
-};
 
 void guardarCSV(TreeMap *arbol, const char *nombreArchivo) {
     FILE *archivo = fopen(nombreArchivo, "w");

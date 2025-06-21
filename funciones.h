@@ -37,6 +37,8 @@ void marcarGastoComoPagado(TreeMap *arbol);
 void mostrarPorcentajesPorCategorias(TreeMap *arbol);
 void recuperarGastosPendientes(TreeMap *arbol);
 void modificarGasto(TreeMap *arbol);
+void subMenuMostrarMovimientos(TreeMap *arbol);
+void mostrarMesActual(TreeMap *arbol);
 
 
 
