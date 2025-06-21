@@ -16,9 +16,7 @@ void mostrarMenu() {
     printf("5. Historial y análisis\n");
     printf("6. Excedente mensual\n");
     printf("7. Selecciona Meses para ver el porcentaje de Meses\n");
-    printf("8. Cargar archivo de finanzas\n");
-    printf("9. Crear nuevo csv finanzas anio\n");
-    printf("10. Guardar archivo de finanzas\n");
+    printf("8. Acciones archivo de finanzas\n");
     printf("0. Salir\n");
 }
 
@@ -615,7 +613,80 @@ void mostrarPorcentajesPorCategorias(TreeMap *arbol)
     }
 }
 
+bool verificarArchivoExistente(int *anyo, char *nombreArchivo, int opcion) {
+    if (opcion == 1) {
+        printf("Ingrese el año del archivo a cargar: ");
+    } else if (opcion == 2) {
+        printf("Ingrese el año para crear un nuevo archivo: ");
+    } else if (opcion == 3) {
+        printf("Ingrese el año del archivo a guardar: ");
+    } else {
+        return false; // Opción inválida
+    }
+    scanf("%d", anyo);
+    sprintf(nombreArchivo, "finanzas_%d.csv", *anyo);
+    FILE *archivo = fopen(nombreArchivo, "r");
+    if (archivo) {
+        fclose(archivo);
+        return true; // El archivo ya existe
+    } else {
+        return false; // El archivo no existe
+    }
 
+}
+
+void accionesAlCSV (TreeMap *arbol, bool *cargado) {
+    printf("¿Qué acción deseas realizar?\n");
+    printf("1. Cargar archivo de finanzas\n");
+    printf("2. Crear nuevo CSV de finanzas\n");
+    printf("3. Guardar archivo de finanzas\n");
+    printf("0. Volver al menú principal\n");
+    printf("Ingrese su opción: ");
+    int opcion;
+    scanf("%d", &opcion);
+
+    int anyo;
+    char nombreArchivo[100];
+    switch (opcion) {
+        case 1:
+            if (*cargado) {
+                printf("Ya se ha cargado un archivo de finanzas.\n");
+                return;
+            }
+            if (!verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
+                printf("No se pudo verificar el archivo. Asegúrate de que el archivo exista.\n");
+                return;
+            }
+            *cargado = true; // Marcar que se ha cargado un archivo CSV
+            cargarMovimientosDesdeCSV(arbol, nombreArchivo);
+            printf("Archivo de finanzas cargado correctamente.\n");
+            break;
+        case 2:
+            if (verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
+                printf("El archivo ya existe, no se sobreescribirá.\n");
+                return;
+            }
+            copiarArchivoCSV("plantilla.csv", nombreArchivo);
+            break;
+        case 3:
+            if (!*cargado) {
+                printf("No se ha cargado ningún archivo de finanzas. Carga un archivo antes de guardar.\n");
+                return;
+            }
+            if (!verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
+                printf("No se pudo verificar el archivo. Asegúrate de que el archivo exista.\n");
+                return;
+            }
+            guardarCSV(arbol, nombreArchivo);
+            break;
+        case 0:
+            printf("Volviendo al menú principal...\n");
+            return;
+        default:
+            printf("Opción inválida. Volviendo al menú principal...\n");
+            return;
+    }
+}
 
 
 

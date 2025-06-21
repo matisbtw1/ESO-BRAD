@@ -100,50 +100,8 @@ int main()
            // Aquí iría la lógica para ver la cuenta de ahorro
            break;
        case 8:
-           if (cargado) 
-           {
-            printf("Ya se ha cargado un archivo de finanzas.\n");
-            break;
-           }
-           printf("Ingresa el año para cargar archivo de finanzas: ");
-           int anyo;
-           scanf("%d", &anyo);
-           
-           char leerArchivo[100];
-           sprintf(leerArchivo, "finanzas_%d.csv", anyo);
-           
-           FILE *verificar = fopen(leerArchivo, "r");
-           if (!verificar) {
-               printf("No se pudo abrir el archivo %s. Asegúrate de que exista.\n", leerArchivo);
-               break;
-           }
-           fclose(verificar);
-           cargado = true; // Marcar que se ha cargado un archivo CSV
-           cargarMovimientosDesdeCSV(arbol, leerArchivo); // Cargar movimientos desde un archivo CSV
-           printf("Archivo de finanzas cargado correctamente.\n");
-           break;
-       case 9:
-           printf("Crear nuevo csv finanzas anio\n");
-           int anio;
-           printf("Ingresa el año para crear archivo de finanzas: ");
-           scanf("%d", &anio);
-           
-           char nombreArchivo[100];
-           sprintf(nombreArchivo, "finanzas_%d.csv", anio);
-           
-           // Verificar si ya existe
-           FILE *archivo = fopen(nombreArchivo, "r");
-           if (archivo) {
-            printf("El archivo ya existe, no se sobreescribirá.\n");
-            fclose(archivo);
-            }
-            else {
-               copiarArchivoCSV("plantilla.csv", nombreArchivo);
-            }
-           break;
-       case 10:
-           printf("Guardar archivo de finanzas\n");
-           guardarCSV(arbol, "finanzas_2025.csv"); // Guardar los movimientos financieros en un archivo CSV
+           accionesAlCSV(arbol, &cargado); // Cargar un archivo de finanzas
+           mostrarMenu(); // Mostrar el menú después de realizar acciones con el CSV
            break;
        case 0:
            printf("Salir del programa\n");

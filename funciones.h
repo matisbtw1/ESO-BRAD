@@ -37,7 +37,8 @@ void marcarGastoComoPagado(TreeMap *arbol);
 void mostrarPorcentajesPorCategorias(TreeMap *arbol);
 void recuperarGastosPendientes(TreeMap *arbol);
 void modificarGasto(TreeMap *arbol);
-
+bool verificarArchivoExistente(int *anyo, char *nombreArchivo, int opcion);
+void accionesAlCSV(TreeMap *arbol, bool *cargado);
 
 
 void tolowercase(char *str);
