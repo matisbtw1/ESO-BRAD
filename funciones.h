@@ -41,7 +41,8 @@ bool verificarArchivoExistente(int *anyo, char *nombreArchivo, int opcion);
 void accionesAlCSV(TreeMap *arbol, bool *cargado);
 void subMenuMostrarMovimientos(TreeMap *arbol);
 void mostrarMesActual(TreeMap *arbol);
-
+void SubMenuRegistrarMovimiento(TreeMap *arbol);
+void reiniciarMes(TreeMap *arbol);
 
 void tolowercase(char *str);
 void guardarCSV(TreeMap *arbol, const char *nombreArchivo);

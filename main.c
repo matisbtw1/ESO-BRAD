@@ -69,7 +69,7 @@ int main()
            }
            printf("Registrar movimiento financiero\n");
            // Aquí iría la lógica para registrar un movimiento financiero
-           registrarMovimientoFinanciero(arbol); // Registrar un nuevo movimiento financiero
+           SubMenuRegistrarMovimiento(arbol); // Llamar a la función para registrar un movimiento financiero
            mostrarMenu(); // Mostrar el menú después de registrar un movimiento
            break;
        case 2:

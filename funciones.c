@@ -342,7 +342,82 @@ void guardarCSV(TreeMap *arbol, const char *nombreArchivo) {
     fclose(archivo);
     printf("Datos guardados en %s\n", nombreArchivo);
 }
+void reiniciarMes(TreeMap *arbol){
+    int opcionMes;
+    MesFinanciero *datosMes = NULL;
+    do {
+        printf("Ingrese 0 para volver al menú principal.\n");
+        printf("Seleccione el mes a reiniciar:\n");
+        for (int i = 0; i < 12; i++) {
+            printf("%2d. %s\n", i + 1, nombresMeses[i]);
+        }
+        printf("Ingrese el número del mes (1-12): ");
+        scanf("%d", &opcionMes);
 
+        if (opcionMes == 0) {
+            printf("Volviendo al menú principal...\n");
+            return;
+        }
+        if (opcionMes < 1 || opcionMes > 12) {
+            printf("Opción inválida. Intente nuevamente.\n");
+            continue;
+        }
+
+        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[opcionMes - 1]);
+        if (!par) {
+            printf("El mes seleccionado no existe. Intente nuevamente.\n");
+            continue;
+        }
+
+        datosMes = (MesFinanciero*)par->value;
+        if (datosMes->modificado == 0) {
+            printf("El mes seleccionado no ha sido modificado. Seleccione otro mes.\n");
+            datosMes = NULL;
+        }
+    } while (datosMes == NULL);
+
+    // Reiniciar los datos del mes
+    datosMes->ingresos = 0;
+    datosMes->ahorrado = 0;
+    datosMes->totalGastos = 0;
+    datosMes->modificado = 0;
+
+    Gasto *gasto = list_first(datosMes->listaGastos);
+    while (gasto != NULL) {
+        // Liberar memoria de cada gasto
+        gasto->modificado = false; // Marcar como no modificado
+        strcpy(gasto->estado, "No Registra"); 
+        gasto->monto = 0; // Reiniciar el monto
+        gasto = list_next(datosMes->listaGastos);
+
+    }
+    printf("El mes %s ha sido reiniciado exitosamente.\n", datosMes->nombreMes);
+}
+void SubMenuRegistrarMovimiento(TreeMap *arbol){
+    int opcion;
+    do {
+        printf("Submenú de registro de movimientos financieros:\n");
+        printf("1. Registrar movimiento financiero\n");
+        printf("2. Reiniciar mes\n");
+        printf("0. Volver al menú principal\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                registrarMovimientoFinanciero(arbol);
+                break;
+            case 2:
+                reiniciarMes(arbol);
+                break;
+            case 0:
+                printf("Volviendo al menú principal...\n");
+                break;
+            default:
+                printf("Opción no válida. Intente nuevamente.\n");
+        }
+    } while (opcion != 0);
+}
 // Función para registrar movimiento financiero (sin presupuesto)
 void registrarMovimientoFinanciero(TreeMap *arbol) {
     printf("Seleccione el mes para registrar:\n");
