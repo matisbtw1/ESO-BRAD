@@ -45,6 +45,6 @@ void mostrarMesActual(TreeMap *arbol);
 
 void tolowercase(char *str);
 void guardarCSV(TreeMap *arbol, const char *nombreArchivo);
-
+void mostrarXmeses(TreeMap *arbol);
 
 #endif
