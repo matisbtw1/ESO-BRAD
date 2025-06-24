@@ -77,8 +77,7 @@ int main()
            // Aquí iría la lógica para ver el resumen mensual
               subMenuMostrarMovimientos(arbol); // Mostrar los movimientos financieros por mes
               // sub menu que hace llamado a las distinas funciones de visualizacion de los movimientos financieros
-              
-              
+
               
               mostrarMenu();
            break;
