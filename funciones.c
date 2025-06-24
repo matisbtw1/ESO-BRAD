@@ -18,15 +18,27 @@ const char* categoriasGastos[12] = {
 };
 
 void mostrarMenu() {
-    printf("Menu de opciones:\n");
-    printf("1. Registrar movimiento financiero\n");
-    printf("2. Ver resumen mensual\n");
-    printf("4. Gastos planificados\n");
-    printf("5. Historial y análisis\n");
-    printf("6. Excedente mensual\n");
-    printf("7. Selecciona Meses para ver el porcentaje de Meses\n");
-    printf("8. Acciones archivo de finanzas\n");
-    printf("0. Salir\n");
+
+    system("cls"); 
+
+    printf("\n");
+    printf("  ╔════════════════════════════════════════════════════════════╗\n");
+    printf("  ║         SISTEMA DE GESTIÓN FINANCIERA PERSONAL (SGFP)      ║\n");
+    printf("  ╠════════════════════════════════════════════════════════════╣\n");
+    printf("  ║                                                            ║\n");
+    printf("  ║  1. Registrar Movimiento Financiero                        ║\n");
+    printf("  ║  2. Ver Resumen Mensual                                    ║\n");
+    printf("  ║  3. Presupuesto Mensual                                    ║\n");
+    printf("  ║  4. Gestionar Gastos                                       ║\n");
+    printf("  ║  5. Historial y Análisis                                   ║\n");
+    printf("  ║  6. Ver Excedente Mensual                                  ║\n");
+    printf("  ║  7. Ver Porcentaje de Gastos por Categoría                 ║\n");
+    printf("  ║  8. Acciones de Archivo CSV (Cargar/Crear/Guardar)         ║\n");
+    printf("  ║                                                            ║\n");
+    printf("  ║  0. Salir                                                  ║\n");
+    printf("  ║                                                            ║\n");
+    printf("  ╚════════════════════════════════════════════════════════════╝\n");
+    
 }
 
 void imprimirMensaje(const char *mensaje) {
