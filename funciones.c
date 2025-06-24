@@ -23,7 +23,7 @@ void mostrarMenu() {
 
     printf("\n");
     printf("  ╔════════════════════════════════════════════════════════════╗\n");
-    printf("  ║         SISTEMA DE GESTIÓN FINANCIERA PERSONAL (SGFP)        ║\n");
+    printf("  ║         SISTEMA DE GESTIÓN FINANCIERA PERSONAL (SGFP)      ║\n");
     printf("  ╠════════════════════════════════════════════════════════════╣\n");
     printf("  ║                                                            ║\n");
     printf("  ║  1. Registrar Movimiento Financiero                        ║\n");
