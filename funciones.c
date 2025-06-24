@@ -19,24 +19,22 @@ const char* categoriasGastos[12] = {
 
 void mostrarMenu() {
 
-    system("cls"); 
-
     printf("\n");
-    printf("  ╔════════════════════════════════════════════════════════════╗\n");
-    printf("  ║         SISTEMA DE GESTIÓN FINANCIERA PERSONAL (SGFP)      ║\n");
-    printf("  ╠════════════════════════════════════════════════════════════╣\n");
-    printf("  ║                                                            ║\n");
-    printf("  ║  1. Registrar Movimiento Financiero                        ║\n");
-    printf("  ║  2. Ver Resumen Mensual                                    ║\n");
-    printf("  ║  4. Gestionar Gastos                                       ║\n");
-    printf("  ║  5. Historial y Análisis                                   ║\n");
-    printf("  ║  6. Ver Excedente Mensual                                  ║\n");
-    printf("  ║  7. Ver Porcentaje de Gastos por Categoría                 ║\n");
-    printf("  ║  8. Acciones de Archivo CSV (Cargar/Crear/Guardar)         ║\n");
-    printf("  ║                                                            ║\n");
-    printf("  ║  0. Salir                                                  ║\n");
-    printf("  ║                                                            ║\n");
-    printf("  ╚════════════════════════════════════════════════════════════╝\n");
+    printf("╔════════════════════════════════════════════════════════════╗\n");
+    printf("║         SISTEMA DE GESTIÓN FINANCIERA PERSONAL (SGFP)      ║\n");
+    printf("╠════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                            ║\n");
+    printf("║  1. Registrar Movimiento Financiero                        ║\n");
+    printf("║  2. Ver Resumen Mensual                                    ║\n");
+    printf("║  4. Gestionar Gastos                                       ║\n");
+    printf("║  5. Historial y Análisis                                   ║\n");
+    printf("║  6. Ver Excedente Mensual                                  ║\n");
+    printf("║  7. Ver Porcentaje de Gastos por Categoría                 ║\n");
+    printf("║  8. Acciones de Archivo CSV (Cargar/Crear/Guardar)         ║\n");
+    printf("║                                                            ║\n");
+    printf("║  0. Salir                                                  ║\n");
+    printf("║                                                            ║\n");
+    printf("╚════════════════════════════════════════════════════════════╝\n");
     
 }
 
@@ -407,11 +405,18 @@ void reiniciarMes(TreeMap *arbol){
 void SubMenuRegistrarMovimiento(TreeMap *arbol){
     int opcion;
     do {
-        printf("Submenú de registro de movimientos financieros:\n");
-        printf("1. Registrar movimiento financiero\n");
-        printf("2. Reiniciar mes\n");
-        printf("0. Volver al menú principal\n");
-        printf("Seleccione una opción: ");
+        printf("\n");
+        printf("╔════════════════════════════════════════════════════════════╗\n");
+        printf("║             REGISTRO Y GESTIÓN DE MOVIMIENTOS              ║\n");
+        printf("╠════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                            ║\n");
+        printf("║  1. Registrar movimiento financiero                        ║\n");
+        printf("║  2. Reiniciar todos los datos de un mes                    ║\n");
+        printf("║                                                            ║\n");
+        printf("║  0. Volver al menú principal                               ║\n");
+        printf("║                                                            ║\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("\nIngrese su opción: ");
         scanf("%d", &opcion);
 
         switch (opcion) {
@@ -431,16 +436,25 @@ void SubMenuRegistrarMovimiento(TreeMap *arbol){
 }
 // Función para registrar movimiento financiero (sin presupuesto)
 void registrarMovimientoFinanciero(TreeMap *arbol) {
-    printf("Seleccione el mes para registrar:\n");
-    printf("NOTA: Una vez modificado, el mes se marcará como cerrado.\n");
-    printf("ADVERTENCIA: Si el mes ya ha sido cerrado, no se podrá modificar.\n");
-    printf("Si desea modificar el mes deberá eliminarlo y registrarlo nuevamente.\n");
+    
+    printf("\n");
+    printf("╔════════════════════════════════════════════════════════════╗\n");
+    printf("║              REGISTRAR MOVIMIENTO FINANCIERO               ║\n");
+    printf("╠════════════════════════════════════════════════════════════╣\n");
+    printf("║  [INFO] Seleccione un mes para registrar sus ingresos y    ║\n");
+    printf("║  gastos. Una vez finalizado, el mes se marcará como        ║\n");
+    printf("║  como 'cerrado' y no podrá ser modificado. Si desea        ║\n");
+    printf("║  modificarlo debe eliminarlo y registrarlo nuevamente      ║\n");
+    printf("╚════════════════════════════════════════════════════════════╝\n\n");
+
+
     for (int i = 0; i < 12; i++) {
         printf("%2d. %s\n", i + 1, nombresMeses[i]);
     }
+
     int opcionMes = 0;
     do {
-        printf("Ingrese el número del mes (1-12): ");
+        printf("\n>> Ingrese el número del mes (1-12): ");
         scanf("%d", &opcionMes);
     } while (opcionMes < 1 || opcionMes > 12);
 
@@ -448,7 +462,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
     Pair* par = searchTreeMap(arbol, (void*)mes);
     MesFinanciero* datosMes = (MesFinanciero*)par->value;
     if (datosMes -> modificado == 1) {
-        printf("El mes %s ya ha sido cerrado. Si desea modificar el mes deberá eliminarlo y registrarlo nuevamente.\n", mes);
+        printf("[!] El mes %s ya ha sido cerrado. Si desea modificar el mes deberá eliminarlo y registrarlo nuevamente.\n", mes);
         return;
     }
 
@@ -457,15 +471,15 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         int ingresosAux = 0;
         printf("Ingrese el monto de ingresos para el mes %s: ", mes);
         scanf("%d", &ingresosAux);
-        printf("Confirma el ingreso de %d para el mes %s? (1=Sí, 0=No): ", ingresosAux, mes);
+        printf(">> ¿Confirma el ingreso de %d para el mes %s? (1 = Sí, 0 = No): ", ingresosAux, mes);
         int confirmarIngreso;
         scanf("%d", &confirmarIngreso);
         if (confirmarIngreso == 1) {
             datosMes->ingresos += ingresosAux;
             datosMes->ahorrado += ingresosAux; // Aumentar el ahorro con los ingresos
-            printf("Ingreso de %d registrado para el mes %s.\n", ingresosAux, mes);
+            printf("[OK] Ingreso de %d registrado para el mes %s.\n", ingresosAux, mes);
         } else {
-            printf("Ingreso no confirmado.\n");
+            printf("[INFO] Ingreso no confirmado.\n");
         }
         if (confirmarIngreso == 1) break;
     }
@@ -718,11 +732,21 @@ void recuperarGastosPendientes(TreeMap *arbol) {
 }
 
 void modificarGasto(TreeMap *arbol){
-    printf("¿Qué acción deseas realizar?\n");
-    printf("1. Marcar gasto como pagado\n");
-    printf("2. Recuperar gastos pendientes\n");
-    printf("0. Volver al menú principal\n");
-    printf("Ingrese su opcion: ");
+    printf("\n");
+    printf("╔════════════════════════════════════════════════════════════╗\n");
+    printf("║                      GESTIONAR GASTOS                      ║\n");
+    printf("╠════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                            ║\n");
+    printf("║  1. Marcar un gasto pendiente como 'Pagado'                ║\n");
+    printf("║  2. Recuperar gastos pendientes de meses anteriores        ║\n");
+    printf("║                                                            ║\n");
+    printf("║  0. Volver al menú principal                               ║\n");
+    printf("║                                                            ║\n");
+    printf("╚════════════════════════════════════════════════════════════╝\n");
+    printf("\n  Ingrese su opción: ");
+
+
+
     int opcion;
     scanf("%d", &opcion);   
 
@@ -845,12 +869,21 @@ bool verificarArchivoExistente(int *anyo, char *nombreArchivo, int opcion) {
 }
 
 void accionesAlCSV (TreeMap *arbol, bool *cargado) {
-    printf("¿Qué acción deseas realizar?\n");
-    printf("1. Cargar archivo de finanzas\n");
-    printf("2. Crear nuevo CSV de finanzas\n");
-    printf("3. Guardar archivo de finanzas\n");
-    printf("0. Volver al menú principal\n");
-    printf("Ingrese su opción: ");
+
+    printf("\n");
+    printf("╔════════════════════════════════════════════════════════════╗\n");
+    printf("║                 ACCIONES DE ARCHIVO CSV                    ║\n");
+    printf("╠════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                            ║\n");
+    printf("║  1. Cargar archivo de finanzas existente                   ║\n");
+    printf("║  2. Crear nuevo archivo de finanzas (desde plantilla)      ║\n");
+    printf("║  3. Guardar cambios en el archivo actual                   ║\n");
+    printf("║                                                            ║\n");
+    printf("║  0. Volver al menú principal                               ║\n");
+    printf("║                                                            ║\n");
+    printf("╚════════════════════════════════════════════════════════════╝\n");
+    printf("\nIngrese su opción: ");
+
     int opcion;
     scanf("%d", &opcion);
 
@@ -859,7 +892,7 @@ void accionesAlCSV (TreeMap *arbol, bool *cargado) {
     switch (opcion) {
         case 1:
             if (*cargado) {
-                printf("Ya se ha cargado un archivo de finanzas.\n");
+                printf("[!] Ya se ha cargado un archivo de finanzas.\n");
                 return;
             }
             if (!verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
@@ -868,18 +901,18 @@ void accionesAlCSV (TreeMap *arbol, bool *cargado) {
             }
             *cargado = true; // Marcar que se ha cargado un archivo CSV
             cargarMovimientosDesdeCSV(arbol, nombreArchivo);
-            printf("Archivo de finanzas cargado correctamente.\n");
+            printf("[OK] Archivo de finanzas cargado correctamente.\n");
             break;
         case 2:
             if (verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
-                printf("El archivo ya existe, no se sobreescribirá.\n");
-                return;
+                printf("[!] El archivo ya existe, no se sobreescribirá.\n");
+                return; 
             }
             copiarArchivoCSV("plantilla.csv", nombreArchivo);
             break;
         case 3:
             if (!*cargado) {
-                printf("No se ha cargado ningún archivo de finanzas. Carga un archivo antes de guardar.\n");
+                printf(" [!] No se ha cargado ningún archivo de finanzas. Carga un archivo antes de guardar.\n");
                 return;
             }
             if (!verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
