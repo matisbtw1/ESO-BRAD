@@ -21,7 +21,6 @@ void mostrarMenu() {
     printf("Menu de opciones:\n");
     printf("1. Registrar movimiento financiero\n");
     printf("2. Ver resumen mensual\n");
-    printf("3. Presupuesto mensual\n");
     printf("4. Gastos planificados\n");
     printf("5. Historial y análisis\n");
     printf("6. Excedente mensual\n");
