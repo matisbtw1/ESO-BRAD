@@ -26,11 +26,11 @@ void mostrarMenu() {
     printf("║                                                            ║\n");
     printf("║  1. Registrar Movimiento Financiero                        ║\n");
     printf("║  2. Ver Resumen Mensual                                    ║\n");
-    printf("║  4. Gestionar Gastos                                       ║\n");
-    printf("║  5. Historial y Análisis                                   ║\n");
-    printf("║  6. Ver Excedente Mensual                                  ║\n");
-    printf("║  7. Ver Porcentaje de Gastos por Categoría                 ║\n");
-    printf("║  8. Acciones de Archivo CSV (Cargar/Crear/Guardar)         ║\n");
+    printf("║  3. Gestionar Gastos                                       ║\n");
+    printf("║  4. Historial y Análisis                                   ║\n");
+    printf("║  5. Ver Excedente Mensual                                  ║\n");
+    printf("║  6. Ver Porcentaje de Gastos por Categoría                 ║\n");
+    printf("║  7. Acciones de Archivo CSV (Cargar/Crear/Guardar)         ║\n");
     printf("║                                                            ║\n");
     printf("║  0. Salir                                                  ║\n");
     printf("║                                                            ║\n");
