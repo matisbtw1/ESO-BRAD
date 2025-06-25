@@ -548,6 +548,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
             datosMes->totalGastos += g->monto; // Aumentar el total de gastos pagados
             printf("Gasto marcado como pagado\n");
         }
+        g->modificado = true; // Marcar el gasto como modificado
     }
     datosMes->modificado = 1; // Marcar como modificado
     printf("¡Movimiento financiero actualizado para %s!\nEl mes ha sido cerrado\n", mes);
@@ -966,6 +967,92 @@ int leerOpcionValida(int min, int max)
     }
 }
 
+
+void compararGastosEntreMeses(TreeMap *arbol)
+{
+    printf("Seleccione dos meses para comparar gastos:\n");
+    for (int i = 0; i < 12; i++) {
+        printf("%2d. %s\n", i + 1, nombresMeses[i]);
+    }
+
+    int mes1, mes2;
+    do {
+        printf("Ingrese el número del primer mes (1-12): ");
+        scanf("%d", &mes1);
+    } while (mes1 < 1 || mes1 > 12);
+
+    do {
+        printf("Ingrese el número del segundo mes (1-12): ");
+        scanf("%d", &mes2);
+    } while (mes2 < 1 || mes2 > 12);
+
+    if (mes1 == mes2) {
+        printf("No se puede comparar el mismo mes. Seleccione meses diferentes.\n");
+        return;
+    }
+
+    printf("Respecto a qué meses desea comparar los gastos?\n");
+    printf("1. %s\n", nombresMeses[mes1 - 1]); 
+    printf("2. %s\n", nombresMeses[mes2 - 1]);
+    printf("Seleccione una opción (1 o 2): ");
+    int opcion; 
+    scanf("%d", &opcion);
+
+    Pair *par1 = searchTreeMap(arbol, (void*)nombresMeses[mes1 - 1]);
+    Pair *par2 = searchTreeMap(arbol, (void*)nombresMeses[mes2 - 1]);
+
+    MesFinanciero *mesFinanciero1 = (MesFinanciero*)par1->value;
+    MesFinanciero *mesFinanciero2 = (MesFinanciero*)par2->value;
+
+    if(mesFinanciero1->modificado == 0 || mesFinanciero2->modificado == 0) {
+        printf("Uno o ambos meses no han sido modificados. No se puede realizar la comparación.\n");
+        return;
+    }
+    printf("\nComparación de gastos entre %s y %s:\n", mesFinanciero1->nombreMes, mesFinanciero2->nombreMes);
+    
+    Gasto *gasto1 = list_first(mesFinanciero1->listaGastos);
+    Gasto *gasto2 = list_first(mesFinanciero2->listaGastos);
+
+    while (gasto1 != NULL || gasto2 != NULL) {
+        if (strcmp(gasto1->estado, "No Registra") == 0 && strcmp(gasto2->estado, "No Registra") == 0) {
+            printf("Ninguno de los gastos ha sido modificado, omitiendo...\n");
+            gasto1 = list_next(mesFinanciero1->listaGastos);
+            gasto2 = list_next(mesFinanciero2->listaGastos);
+            continue; // Ninguno de los gastos ha sido modificado, saltar
+        }
+        float porcentaje = 0.0;
+        if (gasto1->monto > 0 && gasto2->monto == 0) {
+            if (opcion == 1) porcentaje = 100.0; // Si el monto es 0, asignar 100% para evitar división por cero
+            else if (opcion == 2)porcentaje = -100.0; // Lo mismo para el segundo mes
+        }
+        else if (gasto1->monto == 0 && gasto2->monto > 0) {
+            if (opcion == 1) porcentaje = -100.0; // Si el monto es 0, asignar -100% para evitar división por cero
+            else if (opcion == 2)porcentaje = 100.0; // Lo mismo para el primer mes
+        }
+        else if (gasto1->monto != 0 && gasto2->monto != 0) {
+            if (opcion == 1) porcentaje = (gasto1->monto * 100.0 / (float)gasto2->monto) - 100.0;
+            else if (opcion == 2) porcentaje = (gasto2->monto * 100.0 / (float)gasto1->monto) - 100.0;
+        }
+        if (opcion == 1) {
+            printf("Categoría: %-15s | %s: %6d | %s: %6d | Variación: %.2f%%\n",
+               gasto1->categoria,
+               mesFinanciero1->nombreMes, gasto1->monto,
+               mesFinanciero2->nombreMes, gasto2->monto,
+               porcentaje);
+        }
+
+        else if (opcion == 2) {
+            printf("Categoría: %-15s | %s: %6d | %s: %6d | Variación: %.2f%%\n",
+               gasto2->categoria,
+               mesFinanciero2->nombreMes, gasto2->monto,
+               mesFinanciero1->nombreMes, gasto1->monto,
+               porcentaje);
+        }
+    
+        gasto1 = list_next(mesFinanciero1->listaGastos);
+        gasto2 = list_next(mesFinanciero2->listaGastos);
+    }
+}
 
 void subMenuAnalisis(TreeMap *arbol)
 {
