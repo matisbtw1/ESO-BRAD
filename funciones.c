@@ -187,10 +187,10 @@ void mostrarXmeses(TreeMap *arbol) {
     }
 
     printf("\n--- Mostrando los últimos %d meses desde %s ---\n", x, nombresMeses[indiceMesActual]);
-    int mostrados = 0;
-    for (int i = indiceMesActual; i >= 0 && mostrados < x; i--) {
+    int indiceMesInicio = indiceMesActual - (x - 1); // Calcular el índice de inicio
+    for (int i = indiceMesInicio ; i <= indiceMesActual ; i++)
+    {
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
-        mostrados++;
         if (par == NULL) {
             printf("[%s] No hay datos registrados para este mes.\n", nombresMeses[i]);
             continue;
@@ -208,7 +208,7 @@ void mostrarXmeses(TreeMap *arbol) {
         int hayGastos = 0;
         Gasto *g = list_first(mes->listaGastos);
         while (g) {
-            if (strcmp(g->estado, "Pendiente") == 0 || strcmp(g->estado, "Pagado") == 0) {
+            if (strcmp(g->estado, "No Registra") != 0) {
                 printf(" - %s | Monto: %d | Estado: %s\n", g->categoria, g->monto, g->estado);
                 hayGastos = 1;
             }
@@ -218,7 +218,6 @@ void mostrarXmeses(TreeMap *arbol) {
             printf("No hay gastos registrados para este mes.\n");
         }
         printf("--------------------------------------\n");
-        
     }
 }
 void subMenuMostrarMovimientos(TreeMap *arbol){
@@ -286,7 +285,7 @@ void mostrarMesActual(TreeMap *arbol) {
     int hayGastos = 0;
     Gasto *g = list_first(mesActual->listaGastos);
     while (g) {
-    if (strcmp(g->estado, "Pendiente") == 0 || strcmp(g->estado, "Pagado") == 0) {
+    if (strcmp(g->estado, "No Registra") != 0) {
         printf(" - %s | Monto: %d | Estado: %s\n", g->categoria, g->monto, g->estado);
         hayGastos = 1;
     }
