@@ -29,11 +29,9 @@ void mostrarMenu() {
     printf("║  3. Gestionar Gastos                                       ║\n");
     printf("║  4. Historial y Análisis                                   ║\n");
     printf("║  5. Ver Excedente Mensual                                  ║\n");
-    printf("║  6. Ver Porcentaje de Gastos por Categoría                 ║\n");
-    printf("║  7. Acciones de Archivo CSV (Cargar/Crear/Guardar)         ║\n");
+    printf("║  6. Acciones de Archivo CSV (Cargar/Crear/Guardar)         ║\n");
     printf("║                                                            ║\n");
     printf("║  0. Salir                                                  ║\n");
-    printf("║                                                            ║\n");
     printf("╚════════════════════════════════════════════════════════════╝\n");
     
 }
@@ -969,7 +967,38 @@ int leerOpcionValida(int min, int max)
 }
 
 
+void subMenuAnalisis(TreeMap *arbol)
+{
+    printf("\n");
+    printf("╔════════════════════════════════════════════════════════════╗\n"); 
+    printf("║                      ANÁLISIS FINANCIERO                   ║\n");
+    printf("╠════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                            ║\n");
+    printf("║  1. Ver porcentaje de gastos por mes                       ║\n");
+    printf("║  2. Comparacion de gastos entre meses                      ║\n");
+    printf("║                                                            ║\n");
+    printf("║  0. Volver al menú principal                               ║\n");
+    printf("║                                                            ║\n");
+    printf("╚════════════════════════════════════════════════════════════╝\n");
+    printf("\nIngrese su opción: ");
 
+    int opcion = leerOpcionValida(0, 2);
+    switch (opcion) {
+        case 1:
+            mostrarPorcentajesPorCategorias(arbol);
+            break;
+        case 2:
+            compararGastosEntreMeses(arbol);
+            break;
+        case 0:
+            printf("Volviendo al menú principal...\n");
+            return;
+        default:
+            printf("Opción inválida. Intente Nuevamente\n");
+            break;
+    }
+
+}
 
 
 

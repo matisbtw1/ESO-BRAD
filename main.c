@@ -83,27 +83,18 @@ int main()
               mostrarMenu();
            break;
        case 3:
-           printf("Presupuesto mensual\n");
-           // Aquí iría la lógica para manejar el presupuesto mensual
-           break;
-       case 4:
             modificarGasto(arbol); // Modificar un gasto existente
             mostrarMenu();
             break;
-       case 5:
-           printf("Historial y análisis\n");
-           // Aquí iría la lógica para el historial y análisis
+       case 4:
+           subMenuAnalisis(arbol); // Mostrar el submenú de análisis financiero
+           mostrarMenu(); // Mostrar el menú después de realizar acciones de análisis
            break;
-       case 6:
+       case 5:
            printf("Excedente mensual\n");
            // Aquí iría la lógica para manejar el excedente mensual
            break;
-       case 7:
-           printf("Mostrando porcentajes por categorías\n");
-           mostrarPorcentajesPorCategorias(arbol); 
-           // Aquí iría la lógica para ver la cuenta de ahorro
-           break;
-       case 8:
+       case 6:
            accionesAlCSV(arbol, &cargado); // Cargar un archivo de finanzas
            mostrarMenu(); // Mostrar el menú después de realizar acciones con el CSV
            break;
