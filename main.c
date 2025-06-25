@@ -54,17 +54,18 @@ interfaz y arreglar prints
 int main()
 {
     SetConsoleOutputCP(CP_UTF8); // Configurar la consola para UTF-8
+
    int opcion;
    TreeMap *arbol = createTreeMap(lower_than_mes); // Crear el árbol para almacenar los movimientos financieros
    mostrarMenu();
    bool cargado = false; // Variable para verificar si se ha cargado un archivo CSV
    while (true){
-   scanf("%d", &opcion);
+   opcion = leerOpcionValida(0, 8); 
    switch (opcion) { 
        case 1:
            if (!cargado) 
            {
-            printf("primero carga un archivo de finanzas\n");
+            printf("[!] Primero carga un archivo de finanzas\n");
             break;
            }
            printf("Registrar movimiento financiero\n");

@@ -931,6 +931,45 @@ void accionesAlCSV (TreeMap *arbol, bool *cargado) {
 }
 
 
+int leerOpcionValida(int min, int max)
+{
+    char buffer[100];
+    int opcion;
+    char *endptr;
+
+    while (1) 
+    {
+        printf("Seleccione una opción (%d-%d): ", min, max);
+        if (!fgets(buffer, sizeof(buffer), stdin)) {
+            clearerr(stdin);
+            continue;
+        }
+
+        // Eliminar salto de línea
+        buffer[strcspn(buffer, "\n")] = 0;
+
+        // Ignorar líneas vacías (solo Enter)
+        if (strlen(buffer) == 0) continue;
+
+        opcion = strtol(buffer, &endptr, 10);
+
+        if (endptr == buffer || *endptr != '\0')
+        {
+            printf("[!] Entrada inválida. Por favor, ingrese un número válido.\n");
+        }
+        else if (opcion < min || opcion > max)
+        {
+            printf("[!] Opción fuera de rango. Por favor, ingrese un número entre %d y %d.\n", min, max);
+        }
+        else 
+        {
+            return opcion;
+        }
+    }
+}
+
+
+
 
 
 

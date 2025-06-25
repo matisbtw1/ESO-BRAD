@@ -43,6 +43,7 @@ void subMenuMostrarMovimientos(TreeMap *arbol);
 void mostrarMesActual(TreeMap *arbol);
 void SubMenuRegistrarMovimiento(TreeMap *arbol);
 void reiniciarMes(TreeMap *arbol);
+int leerOpcionValida(int min, int max);
 
 void tolowercase(char *str);
 void guardarCSV(TreeMap *arbol, const char *nombreArchivo);
