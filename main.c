@@ -98,7 +98,7 @@ int main()
                 presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             }
-            modificarGasto(arbol); // Modificar un gasto existente
+            subMenumodificarGasto(arbol); // Modificar un gasto existente
             presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
             mostrarMenu();
             break;

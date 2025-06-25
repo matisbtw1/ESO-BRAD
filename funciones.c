@@ -550,7 +550,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
             int confirmarCambio;
             scanf("%d", &confirmarCambio);
             if (confirmarCambio == 1) {
-                g->monto = nuevoMonto;
+                g->monto += nuevoMonto;
                 
             }
             if (confirmarCambio == 1) break;
@@ -690,34 +690,41 @@ void marcarGastoComoPagado(TreeMap *arbol) {
 }
 
 void recuperarGastosPendientes(TreeMap *arbol) {
-    MesFinanciero *mesActual = NULL;
+    MesFinanciero *mesSigActual = NULL;
     int indiceMesActual = -1;
     for (int i = 11; i >= 0; i--) {
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
         if (par != NULL) {
             MesFinanciero *mes = (MesFinanciero*)par->value;
             if (mes->modificado == 1) {
-                mesActual = mes;
-                indiceMesActual = i;
+                if (i + 1 > 12) {
+                    printf("No hay meses siguientes para recuperar gastos pendientes.\n");
+                    return;
+                }
+                Pair *parSig = searchTreeMap(arbol, (void*)nombresMeses[i + 1]);
+                MesFinanciero *mesSig = (MesFinanciero*)parSig->value;
+                mesSigActual = mesSig;
+                indiceMesActual = i+1; 
                 break;
             }
+            
         }
     }
-    if (mesActual == NULL) {
+    if (mesSigActual == NULL) {
         printf("No hay meses modificados para recuperar gastos pendientes.\n");
         return;
     }
 
-    printf("Se usarán 'Otros Gastos' del mes %s como destino de recuperacion.\n", mesActual->nombreMes);
+    printf("Se usarán 'Otros Gastos' del mes %s como destino de recuperacion.\n", mesSigActual->nombreMes);
 
     Gasto *otrosActual = NULL;
-    Gasto *gasto = list_first(mesActual->listaGastos);
+    Gasto *gasto = list_first(mesSigActual->listaGastos);
     while (gasto != NULL) {
         if (strcmp(gasto->categoria, "Otros Gastos") == 0) {
             otrosActual = gasto;
             break;
         }
-        gasto = list_next(mesActual->listaGastos);
+        gasto = list_next(mesSigActual->listaGastos);
     }
 
     for (int i = 0; i < indiceMesActual; i++) {
@@ -742,7 +749,7 @@ void recuperarGastosPendientes(TreeMap *arbol) {
 
         int respuesta;
         printf("\nEl mes %s tiene %d en gastos pendientes.\n", mes->nombreMes, totalGastosPendientes);
-        printf("¿Deseas Trasladarlos al mes actual (%s) como 'Otros Gastos'? (1=Sí, 0=No): ", mesActual->nombreMes);
+        printf("¿Deseas Trasladarlos al mes actual (%s) como 'Otros Gastos'? (1=Sí, 0=No): ", mesSigActual->nombreMes);
         scanf("%d", &respuesta);
         if (respuesta == 0) {
             printf("No se trasladarán los gastos pendientes del mes %s.\n", mes->nombreMes);
@@ -757,12 +764,14 @@ void recuperarGastosPendientes(TreeMap *arbol) {
             }
             gastoPendiente = list_next(mes->listaGastos);
         }
-        printf("Gastos pendientes del mes %s trasladados a 'Otros Gastos' del mes %s.\n", mes->nombreMes, mesActual->nombreMes);
+        printf("Gastos pendientes del mes %s trasladados a 'Otros Gastos' del mes %s.\n", mes->nombreMes, mesSigActual->nombreMes);
+
     }
+    strcpy(otrosActual->estado, "Pendiente"); // Cambiar estado de "Otros Gastos" a "Recuperado"
     printf("\nRecuperación de gastos pendientes completada. Total final en 'Otros Gastos' : %d\n", otrosActual->monto);
 }
 
-void modificarGasto(TreeMap *arbol){
+void subMenumodificarGasto(TreeMap *arbol){
     int opcion;
     do {
         limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
