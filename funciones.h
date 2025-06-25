@@ -48,6 +48,7 @@ void subMenuAnalisis(TreeMap *arbol);
 void compararGastosEntreMeses(TreeMap *arbol);
 void submenuExcedenteMensual(TreeMap *arbol);
 void verAhorroMesAMes(TreeMap *arbol);
+void verPorcentajeAhorro(TreeMap *arbol);
 void limpiarConsola();
 void presionaEnter();
 

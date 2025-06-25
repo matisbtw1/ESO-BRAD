@@ -1135,6 +1135,8 @@ void verAhorroMesAMes(TreeMap *arbol) {
     printf("Ahorrado Mes a Mes:\n");
     int maximoAhorro = 0;
     int minimoAhorro = 0;
+    char mesConMaximo[20] = "";
+    char mesConMinimo[20] = "";
     Pair *par = firstTreeMap(arbol);
    while (true) {
     if (par == NULL) {
@@ -1151,8 +1153,14 @@ void verAhorroMesAMes(TreeMap *arbol) {
             minimoAhorro = datosMes->ahorrado;
         }
 
-        if (datosMes->ahorrado > maximoAhorro) maximoAhorro = datosMes->ahorrado;
-        if (datosMes->ahorrado < minimoAhorro) minimoAhorro = datosMes->ahorrado;
+        if (datosMes->ahorrado > maximoAhorro) {
+            maximoAhorro = datosMes->ahorrado;
+            strcpy(mesConMaximo, datosMes->nombreMes);
+        }
+        if (datosMes->ahorrado < minimoAhorro) {
+            minimoAhorro = datosMes->ahorrado;
+            strcpy(mesConMinimo, datosMes->nombreMes);
+        }
       }
     par = nextTreeMap(arbol);
     if (par == NULL) {
@@ -1162,10 +1170,26 @@ void verAhorroMesAMes(TreeMap *arbol) {
     }
     
     printf("\n");
-    printf("Ahorro Máximo: %d\n", maximoAhorro);
-    printf("Ahorro Mínimo: %d\n", minimoAhorro);
+    printf("Ahorro Máximo: %d | Mes: %s\n", maximoAhorro, mesConMaximo);
+    printf("Ahorro Mínimo: %d | Mes: %s\n", minimoAhorro, mesConMinimo);
 }
 
+void verPorcentajeAhorro(TreeMap *arbol) {
+    Pair *par = firstTreeMap(arbol);
+    if (par == NULL) {
+        printf("No hay meses registrados.\n");
+        return;
+    }
+    printf("Porcentaje de ahorro respecto a ingresos por mes:\n");
+    while (par != NULL) {
+        MesFinanciero *datosMes = (MesFinanciero*)par->value;
+        if (datosMes->modificado == 1 && datosMes->ingresos > 0) {
+            float porcentajeAhorro = ((float)datosMes->ahorrado / datosMes->ingresos) * 100.0;
+            printf("Mes: %s | Porcentaje de Ahorro: %.2f%%\n", datosMes->nombreMes, porcentajeAhorro);
+        }
+        par = nextTreeMap(arbol);
+    }
+}
 
 void submenuExcedenteMensual(TreeMap *arbol) {
     int opcion;
@@ -1193,7 +1217,7 @@ void submenuExcedenteMensual(TreeMap *arbol) {
                 break;
             case 2:
                 limpiarConsola();
-                //verPorcentajeAhorro(arbol);
+                verPorcentajeAhorro(arbol);
                 presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 0:
