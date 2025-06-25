@@ -46,6 +46,8 @@ void reiniciarMes(TreeMap *arbol);
 int leerOpcionValida(int min, int max);
 void subMenuAnalisis(TreeMap *arbol);
 void compararGastosEntreMeses(TreeMap *arbol);
+void limpiarConsola();
+void presionaEnter();
 
 void tolowercase(char *str);
 void guardarCSV(TreeMap *arbol, const char *nombreArchivo);

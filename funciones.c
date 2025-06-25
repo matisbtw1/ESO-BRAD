@@ -17,6 +17,20 @@ const char* categoriasGastos[12] = {
     "Transporte", "Conectividad", "Vestuario", "Salud", "Otros Gastos", NULL
 };
 
+void limpiarConsola() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+void presionaEnter() {
+    printf("\nPresiona Enter para continuar...");
+    while (getchar() != '\n'); // limpia buffer
+    getchar(); // espera enter
+}
+
 void mostrarMenu() {
 
     printf("\n");
@@ -211,19 +225,32 @@ void subMenuMostrarMovimientos(TreeMap *arbol){
 // sub menu que hace llamado a las distinas funciones de visualizacion de los movimientos financieros
     int opcion;
     do {
-        printf("Submenú de movimientos financieros:\n");
-        printf("1. Mostrar ultimos X meses\n");
-        printf("2. Mostrar mes actual\n");
-        printf("0. Volver al menú principal\n");
-        printf("Seleccione una opción: ");
+        limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
+        printf("\n");
+        printf("╔════════════════════════════════════════════════════════════╗\n");
+        printf("║                VISUALIZACIÓN DE MOVIMIENTOS                ║\n");
+        printf("╠════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                            ║\n");
+        printf("║  1. Mostrar movimientos por meses                          ║\n");
+        printf("║  2. Mostrar mes actual                                     ║\n");
+        printf("║                                                            ║\n");
+        printf("║  0. Volver al menú principal                               ║\n");
+        printf("║                                                            ║\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("\nIngrese su opción: ");
+
         scanf("%d", &opcion);
 
         switch (opcion) {
             case 1:
+                limpiarConsola();
                 mostrarXmeses(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 2:
+                limpiarConsola();
                 mostrarMesActual(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 0:
                 printf("Volviendo al menú principal...\n");
@@ -403,6 +430,7 @@ void reiniciarMes(TreeMap *arbol){
 void SubMenuRegistrarMovimiento(TreeMap *arbol){
     int opcion;
     do {
+        limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
         printf("\n");
         printf("╔════════════════════════════════════════════════════════════╗\n");
         printf("║             REGISTRO Y GESTIÓN DE MOVIMIENTOS              ║\n");
@@ -419,10 +447,14 @@ void SubMenuRegistrarMovimiento(TreeMap *arbol){
 
         switch (opcion) {
             case 1:
+                limpiarConsola();
                 registrarMovimientoFinanciero(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 2:
+                limpiarConsola();
                 reiniciarMes(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 0:
                 printf("Volviendo al menú principal...\n");
@@ -731,39 +763,43 @@ void recuperarGastosPendientes(TreeMap *arbol) {
 }
 
 void modificarGasto(TreeMap *arbol){
-    printf("\n");
-    printf("╔════════════════════════════════════════════════════════════╗\n");
-    printf("║                      GESTIONAR GASTOS                      ║\n");
-    printf("╠════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                            ║\n");
-    printf("║  1. Marcar un gasto pendiente como 'Pagado'                ║\n");
-    printf("║  2. Recuperar gastos pendientes de meses anteriores        ║\n");
-    printf("║                                                            ║\n");
-    printf("║  0. Volver al menú principal                               ║\n");
-    printf("║                                                            ║\n");
-    printf("╚════════════════════════════════════════════════════════════╝\n");
-    printf("\n  Ingrese su opción: ");
-
-
-
     int opcion;
-    scanf("%d", &opcion);   
+    do {
+        limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
+        printf("\n");
+        printf("╔════════════════════════════════════════════════════════════╗\n");
+        printf("║                      GESTIONAR GASTOS                      ║\n");
+        printf("╠════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                            ║\n");
+        printf("║  1. Marcar un gasto pendiente como 'Pagado'                ║\n");
+        printf("║  2. Recuperar gastos pendientes de meses anteriores        ║\n");
+        printf("║                                                            ║\n");
+        printf("║  0. Volver al menú principal                               ║\n");
+        printf("║                                                            ║\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("\n  Ingrese su opción: ");
+        scanf("%d", &opcion);   
 
-    switch (opcion) {
-        case 1:
-            marcarGastoComoPagado(arbol);
-            break;
-        case 2:
-            recuperarGastosPendientes(arbol);
-            break;
-        case 0:
-            printf("Volviendo al menú principal...\n");
-            return;
-        default:
-            printf("Opción inválida. Volviendo al menú principal...\n");
-            return;
-    }
+        switch (opcion) {
+            case 1:
+                limpiarConsola();
+                marcarGastoComoPagado(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+                break;
+            case 2:
+                limpiarConsola();
+                recuperarGastosPendientes(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+                break;
+            case 0:
+                printf("Volviendo al menú principal...\n");
+                return;
+            default:
+                printf("Opción inválida. Intente nuevamente\n");
+        }
 
+    } while (opcion != 0);
+    
 }
 
 void mostrarPorcentajesPorCategorias(TreeMap *arbol)
@@ -1056,34 +1092,42 @@ void compararGastosEntreMeses(TreeMap *arbol)
 
 void subMenuAnalisis(TreeMap *arbol)
 {
-    printf("\n");
-    printf("╔════════════════════════════════════════════════════════════╗\n"); 
-    printf("║                      ANÁLISIS FINANCIERO                   ║\n");
-    printf("╠════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                            ║\n");
-    printf("║  1. Ver porcentaje de gastos por mes                       ║\n");
-    printf("║  2. Comparacion de gastos entre meses                      ║\n");
-    printf("║                                                            ║\n");
-    printf("║  0. Volver al menú principal                               ║\n");
-    printf("║                                                            ║\n");
-    printf("╚════════════════════════════════════════════════════════════╝\n");
-    printf("\nIngrese su opción: ");
+    while (true) {
+        limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
+        printf("\n");
+        printf("╔════════════════════════════════════════════════════════════╗\n"); 
+        printf("║                      ANÁLISIS FINANCIERO                   ║\n");
+        printf("╠════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                            ║\n");
+        printf("║  1. Ver porcentaje de gastos por mes                       ║\n");
+        printf("║  2. Comparacion de gastos entre meses                      ║\n");
+        printf("║                                                            ║\n");
+        printf("║  0. Volver al menú principal                               ║\n");
+        printf("║                                                            ║\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("\nIngrese su opción: ");
 
-    int opcion = leerOpcionValida(0, 2);
-    switch (opcion) {
-        case 1:
-            mostrarPorcentajesPorCategorias(arbol);
-            break;
-        case 2:
-            compararGastosEntreMeses(arbol);
-            break;
-        case 0:
-            printf("Volviendo al menú principal...\n");
-            return;
-        default:
-            printf("Opción inválida. Intente Nuevamente\n");
-            break;
+        int opcion = leerOpcionValida(0, 2);
+        switch (opcion) {
+            case 1:
+                limpiarConsola();
+                mostrarPorcentajesPorCategorias(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+                break;
+            case 2:
+                limpiarConsola();
+                compararGastosEntreMeses(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+                break;
+            case 0:
+                printf("Volviendo al menú principal...\n");
+                return;
+            default:
+                printf("Opción inválida. Intente Nuevamente\n");
+                break;
+        }
     }
+    
 
 }
 

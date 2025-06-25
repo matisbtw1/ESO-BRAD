@@ -57,37 +57,61 @@ int main()
 
    int opcion;
    TreeMap *arbol = createTreeMap(lower_than_mes); // Crear el árbol para almacenar los movimientos financieros
-   mostrarMenu();
    bool cargado = false; // Variable para verificar si se ha cargado un archivo CSV
    while (true){
-   opcion = leerOpcionValida(0, 8); 
+    limpiarConsola(); // Limpiar la consola antes de mostrar el menú
+    mostrarMenu(); // Mostrar el menú principal
+   opcion = leerOpcionValida(0, 6); 
    switch (opcion) { 
        case 1:
+           limpiarConsola(); // Limpiar la consola antes de registrar un movimiento financiero
            if (!cargado) 
            {
             printf("[!] Primero carga un archivo de finanzas\n");
+            presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
             break;
            }
            printf("Registrar movimiento financiero\n");
            // Aquí iría la lógica para registrar un movimiento financiero
            SubMenuRegistrarMovimiento(arbol); // Llamar a la función para registrar un movimiento financiero
+           presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
            mostrarMenu(); // Mostrar el menú después de registrar un movimiento
            break;
        case 2:
-           printf("Ver resumen mensual\n");
+           limpiarConsola(); // Limpiar la consola antes de ver el resumen mensual
            // Aquí iría la lógica para ver el resumen mensual
-              subMenuMostrarMovimientos(arbol); // Mostrar los movimientos financieros por mes
-              // sub menu que hace llamado a las distinas funciones de visualizacion de los movimientos financieros
-
-              
+              if (!cargado) 
+              {
+                printf("[!] Primero carga un archivo de finanzas\n");
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+                break;
+              }
+           subMenuMostrarMovimientos(arbol); // Mostrar los movimientos financieros por mes
+           presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
               mostrarMenu();
            break;
        case 3:
+            limpiarConsola(); // Limpiar la consola antes de modificar un gasto
+            if (!cargado) 
+            {
+                printf("[!] Primero carga un archivo de finanzas\n");
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+                break;
+            }
             modificarGasto(arbol); // Modificar un gasto existente
+            presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
             mostrarMenu();
             break;
        case 4:
+           limpiarConsola(); // Limpiar la consola antes de mostrar el submenú de análisis financiero
+           if (!cargado) 
+           {
+               printf("[!] Primero carga un archivo de finanzas\n");
+               presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+               break;
+           }
            subMenuAnalisis(arbol); // Mostrar el submenú de análisis financiero
+           presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
            mostrarMenu(); // Mostrar el menú después de realizar acciones de análisis
            break;
        case 5:
@@ -95,7 +119,9 @@ int main()
            // Aquí iría la lógica para manejar el excedente mensual
            break;
        case 6:
+           limpiarConsola(); // Limpiar la consola antes de mostrar el submenú de acciones con CSV
            accionesAlCSV(arbol, &cargado); // Cargar un archivo de finanzas
+           presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
            mostrarMenu(); // Mostrar el menú después de realizar acciones con el CSV
            break;
        case 0:
@@ -103,6 +129,8 @@ int main()
            return 0; // Salir del programa
        default:
            printf("Opción no válida. Intente nuevamente.\n");
+           presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+           limpiarConsola(); // Limpiar la consola antes de mostrar el menú nuevamente
       }
    }
 
