@@ -1131,6 +1131,80 @@ void subMenuAnalisis(TreeMap *arbol)
 
 }
 
+void verAhorroMesAMes(TreeMap *arbol) {
+    printf("Ahorrado Mes a Mes:\n");
+    int maximoAhorro = 0;
+    int minimoAhorro = 0;
+    Pair *par = firstTreeMap(arbol);
+   while (true) {
+    if (par == NULL) {
+        printf("No hay meses registrados.\n");
+        return;
+    }
+    MesFinanciero *datosMes = (MesFinanciero*)par->value;
+
+    if (datosMes->modificado == 1) {
+        printf("Mes: %s | Ingresos: %d | Gastos Totales: %d | Ahorro: %d\n",
+           datosMes->nombreMes, datosMes->ingresos, datosMes->totalGastos, datosMes->ahorrado);
+        if (maximoAhorro == 0 && minimoAhorro == 0) {
+            maximoAhorro = datosMes->ahorrado;
+            minimoAhorro = datosMes->ahorrado;
+        }
+
+        if (datosMes->ahorrado > maximoAhorro) maximoAhorro = datosMes->ahorrado;
+        if (datosMes->ahorrado < minimoAhorro) minimoAhorro = datosMes->ahorrado;
+      }
+    par = nextTreeMap(arbol);
+    if (par == NULL) {
+        break; // Salir del bucle si no hay más meses
+    }
+        
+    }
+    
+    printf("\n");
+    printf("Ahorro Máximo: %d\n", maximoAhorro);
+    printf("Ahorro Mínimo: %d\n", minimoAhorro);
+}
+
+
+void submenuExcedenteMensual(TreeMap *arbol) {
+    int opcion;
+    while (true) {
+        limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
+        printf("\n");
+        printf("╔════════════════════════════════════════════════════════════╗\n");
+        printf("║                 EXCEDENTE MENSUAL Y AHORROS                ║\n");
+        printf("╠════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                            ║\n");
+        printf("║  1. Ver ahorro mes a mes (Con total y extremos)            ║\n");
+        printf("║  2. Ver porcentaje de ahorro respecto a ingresos           ║\n");
+        printf("║                                                            ║\n");
+        printf("║  0. Volver al menú principal                               ║\n");
+        printf("║                                                            ║\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("\nIngrese su opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                limpiarConsola();
+                verAhorroMesAMes(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+                break;
+            case 2:
+                limpiarConsola();
+                //verPorcentajeAhorro(arbol);
+                presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+                break;
+            case 0:
+                printf("Volviendo al menú principal...\n");
+                return;
+            default:
+                printf("Opción inválida. Intente nuevamente.\n");
+        }
+    }
+}
+
 
 
 

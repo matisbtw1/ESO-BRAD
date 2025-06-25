@@ -115,8 +115,15 @@ int main()
            mostrarMenu(); // Mostrar el menú después de realizar acciones de análisis
            break;
        case 5:
-           printf("Excedente mensual\n");
-           // Aquí iría la lógica para manejar el excedente mensual
+           limpiarConsola(); // Limpiar la consola antes de manejar el excedente mensual
+           if (!cargado) 
+           {
+               printf("[!] Primero carga un archivo de finanzas\n");
+               presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
+               break;
+           }
+           submenuExcedenteMensual(arbol); // Mostrar el submenú para manejar el excedente mensual
+           presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
            break;
        case 6:
            limpiarConsola(); // Limpiar la consola antes de mostrar el submenú de acciones con CSV
