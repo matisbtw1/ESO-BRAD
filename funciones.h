@@ -7,6 +7,14 @@
 #include "tdas/treemap.h"
 #include "tdas/extra.h"
 #include <stdbool.h>
+#include <windows.h> // Para SetConsoleOutputCP en Windows
+#define RED     "\x1b[31m"
+#define GREEN   "\x1b[32m"
+#define YELLOW  "\x1b[33m"
+#define BLUE    "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN    "\x1b[36m"
+#define RESET   "\x1b[0m"
 
 
 typedef struct {
@@ -25,6 +33,7 @@ typedef struct {
     List *listaGastos;
 } MesFinanciero;
 
+void habilitarColoresANSI();
 int lower_than_string(void* key1, void* key2);
 void copiarArchivoCSV(const char* origen, const char* destino);
 void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo);

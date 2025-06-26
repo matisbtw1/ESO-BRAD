@@ -53,6 +53,7 @@ interfaz y arreglar prints
 
 int main()
 {
+    habilitarColoresANSI(); // Habilitar colores ANSI en la consola
     SetConsoleOutputCP(CP_UTF8); // Configurar la consola para UTF-8
 
    int opcion;
@@ -75,7 +76,7 @@ int main()
            // Aquí iría la lógica para registrar un movimiento financiero
            SubMenuRegistrarMovimiento(arbol); // Llamar a la función para registrar un movimiento financiero
            presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
-           mostrarMenu(); // Mostrar el menú después de registrar un movimiento
+           mostrarMenu();  // Mostrar el menú después de registrar un movimiento
            break;
        case 2:
            limpiarConsola(); // Limpiar la consola antes de ver el resumen mensual

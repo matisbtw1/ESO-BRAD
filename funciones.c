@@ -7,6 +7,21 @@
 #include "tdas/list.h"
 #include "funciones.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+#endif
+
+void habilitarColoresANSI() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+}
+
 const char* nombresMeses[12] = {
     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -34,7 +49,7 @@ void presionaEnter() {
 void mostrarMenu() {
 
     printf("\n");
-    printf("╔════════════════════════════════════════════════════════════╗\n");
+    printf(GREEN"╔════════════════════════════════════════════════════════════╗\n");
     printf("║         SISTEMA DE GESTIÓN FINANCIERA PERSONAL (SGFP)      ║\n");
     printf("╠════════════════════════════════════════════════════════════╣\n");
     printf("║                                                            ║\n");
