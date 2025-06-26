@@ -53,7 +53,9 @@ interfaz y arreglar prints
 
 int main()
 {
-
+limpiarConsola(); // Limpiar la consola al inicio del programa
+habilitarColoresANSI(); // Habilitar colores ANSI en la consola
+SetConsoleOutputCP(CP_UTF8); // Configurar la consola para UTF-8
 printf(GREEN
 "           ____   ____ _____ ____  \n"
 "          / ___| / ___|  ___|  _ \\ \n"
@@ -64,8 +66,7 @@ printf(GREEN
 "      SISTEMA DE GESTIÓN FINANCIERA PERSONAL\n"
 RESET);
 Sleep(4000); 
-    habilitarColoresANSI(); // Habilitar colores ANSI en la consola
-    SetConsoleOutputCP(CP_UTF8); // Configurar la consola para UTF-8
+
 
    int opcion;
    TreeMap *arbol = createTreeMap(lower_than_mes); // Crear el árbol para almacenar los movimientos financieros
