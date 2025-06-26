@@ -1,14 +1,8 @@
-# ESO-BRAD
-gcc -g main.c funciones.c tdas/extra.c tdas/list.c tdas/treemap.c -o finanzas
+## SISTEMA DE GESTIÓN FINANCIERA PERSONAL (SGFP)
 
-./finanzas
+**DESCRIPCION**
 
-Al reiniciar mes hacer pregunta de confirmacion si quiere reiniciar o no
+SGFP es una herramienta de consola para la gestión de finanzas personales. Permite a los usuarios registrar sus ingresos y gastos mensuales, llevar un control de sus ahorros y analizar sus hábitos de consumo a lo largo del tiempo. Todos los datos se almacenan y se gestionan a través de archivos CSV, permitiendo persistencia y portabilidad de la información financiera de un año completo.
 
-mejorar prints mostrar x meses (printear por paginas, 4 por pag) listop
-mejorar prints mostrar actual listop
-
-mejorar prints pagos pendientes
-
-
+**COMO COMPILAR Y EJECUTAR**
 
