@@ -179,10 +179,9 @@ void cargarMovimientosDesdeCSV(TreeMap *arbol, const char *nombreArchivo) {
 }
 void mostrarXmeses(TreeMap *arbol) {
     int x;
-    printf("¿Cuántos meses desea ver a partir del mes actual? ");
+    printf(CYAN"\n¿Cuántos meses desea ver a partir del mes actual? "RESET);
     scanf("%d", &x);
 
-    // Buscar el índice del mes actual (último modificado)
     int indiceMesActual = -1;
     MesFinanciero *mesActual = NULL;
     for (int i = 11; i >= 0; i--) {
@@ -197,42 +196,53 @@ void mostrarXmeses(TreeMap *arbol) {
         }
     }
     if (mesActual == NULL) {
-        printf("No hay meses modificados para mostrar.\n");
+        printf(YELLOW"[!] No hay meses modificados para mostrar.\n"RESET);
         return;
     }
 
-    printf("\n--- Mostrando los últimos %d meses desde %s ---\n", x, nombresMeses[indiceMesActual]);
-    int indiceMesInicio = indiceMesActual - (x - 1); // Calcular el índice de inicio
-    for (int i = indiceMesInicio ; i <= indiceMesActual ; i++)
-    {
+    printf(GREEN"\n══════════════════════════════════════════════════════════════\n"RESET);
+    printf(BOLD" Mostrando los últimos %d meses desde %s\n"RESET, x, nombresMeses[indiceMesActual]);
+    printf(GREEN"══════════════════════════════════════════════════════════════\n"RESET);
+
+    int mostrados = 0;
+    for (int i = indiceMesActual; i >= 0 && mostrados < x; i--) {
+        mostrados++;
+
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
+        printf(CYAN"\n╔══════════════════════════════════════════════════════════╗\n"RESET);
+        printf(BOLD"  MES: %s\n"RESET, nombresMeses[i]);
         if (par == NULL) {
-            printf("[%s] No hay datos registrados para este mes.\n", nombresMeses[i]);
+            printf(YELLOW"  [!] No hay datos registrados para este mes.\n"RESET);
+            printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
             continue;
         }
         MesFinanciero *mes = (MesFinanciero*)par->value;
         if (mes->modificado == 0) {
-            printf("[%s] El mes no ha sido modificado.\n", nombresMeses[i]);
+            printf(YELLOW"  [!] El mes no ha sido modificado.\n"RESET);
+            printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
             continue;
         }
-        printf("\nMes: %s\n", mes->nombreMes);
-        printf("Ingresos: %d\n", mes->ingresos);
-        printf("Ahorro: %d\n", mes->ahorrado);
-        printf("Total Gastos: %d\n", mes->totalGastos);
-        printf("Categorías registradas:\n");
+        printf("  Ingresos:    "GREEN"%d\n"RESET, mes->ingresos);
+        printf("  Ahorro:      "GREEN"%d\n"RESET, mes->ahorrado);
+        printf("  Total Gastos:"GREEN"%d\n"RESET, mes->totalGastos);
+        printf("  Categorías registradas:\n");
+
         int hayGastos = 0;
         Gasto *g = list_first(mes->listaGastos);
         while (g) {
-            if (strcmp(g->estado, "No Registra") != 0) {
-                printf(" - %s | Monto: %d | Estado: %s\n", g->categoria, g->monto, g->estado);
+            if (strcmp(g->estado, "Pendiente") == 0) {
+                printf("    - %-15s | Monto: %-6d | Estado: "RED"%s"RESET"\n", g->categoria, g->monto, g->estado);
                 hayGastos = 1;
-            }
-            g = list_next(mes->listaGastos);
-        }
+    }       else if (strcmp(g->estado, "Pagado") == 0) {
+                printf("    - %-15s | Monto: %-6d | Estado: "GREEN"%s"RESET"\n", g->categoria, g->monto, g->estado);
+                hayGastos = 1;
+    }
+    g = list_next(mes->listaGastos);
+}
         if (!hayGastos) {
-            printf("No hay gastos registrados para este mes.\n");
+            printf(YELLOW"    No hay gastos registrados para este mes.\n"RESET);
         }
-        printf("--------------------------------------\n");
+        printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
     }
 }
 void subMenuMostrarMovimientos(TreeMap *arbol){
