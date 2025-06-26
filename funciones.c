@@ -183,71 +183,86 @@ void mostrarXmeses(TreeMap *arbol) {
     scanf("%d", &x);
 
     int indiceMesActual = -1;
-    MesFinanciero *mesActual = NULL;
     for (int i = 11; i >= 0; i--) {
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
         if (par != NULL) {
             MesFinanciero *mes = (MesFinanciero*)par->value;
             if (mes->modificado == 1) {
-                mesActual = mes;
                 indiceMesActual = i;
                 break;
             }
         }
     }
-    if (mesActual == NULL) {
+    if (indiceMesActual == -1) {
         printf(YELLOW"[!] No hay meses modificados para mostrar.\n"RESET);
         return;
     }
 
-    printf(GREEN"\n══════════════════════════════════════════════════════════════\n"RESET);
-    printf(BOLD" Mostrando los últimos %d meses desde %s\n"RESET, x, nombresMeses[indiceMesActual]);
-    printf(GREEN"══════════════════════════════════════════════════════════════\n"RESET);
+    if (x > indiceMesActual + 1) x = indiceMesActual + 1;
+    if (x <= 0) {
+        printf(YELLOW"[!] Cantidad inválida.\n"RESET);
+        return;
+    }
 
+    int paginas = (x + 3) / 4;
     int mostrados = 0;
-    for (int i = indiceMesActual; i >= 0 && mostrados < x; i--) {
-        mostrados++;
+    for (int pagina = 1; pagina <= paginas; pagina++) {
+        limpiarConsola(); // Limpia la consola antes de mostrar cada página
 
-        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
-        printf(CYAN"\n╔══════════════════════════════════════════════════════════╗\n"RESET);
-        printf(BOLD"  MES: %s\n"RESET, nombresMeses[i]);
-        if (par == NULL) {
-            printf(YELLOW"  [!] No hay datos registrados para este mes.\n"RESET);
-            printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
-            continue;
-        }
-        MesFinanciero *mes = (MesFinanciero*)par->value;
-        if (mes->modificado == 0) {
-            printf(YELLOW"  [!] El mes no ha sido modificado.\n"RESET);
-            printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
-            continue;
-        }
-        printf("  Ingresos:    "GREEN"%d\n"RESET, mes->ingresos);
-        printf("  Ahorro:      "GREEN"%d\n"RESET, mes->ahorrado);
-        printf("  Total Gastos:"GREEN"%d\n"RESET, mes->totalGastos);
-        printf("  Categorías registradas:\n");
+        int inicio = mostrados + 1;
+        int fin = (mostrados + 4 < x) ? mostrados + 4 : x;
+        printf(CYAN"\n--- Página %d de %d (meses %d-%d de %d) ---\n"RESET, pagina, paginas, inicio, fin, x);
 
-        int hayGastos = 0;
-        Gasto *g = list_first(mes->listaGastos);
-while (g) {
-    if (strcmp(g->estado, "Pendiente") == 0) {
-        printf("    - %-15s | Monto: " YELLOW "%-6d" RESET " | Estado: " RED "%s" RESET "\n", g->categoria, g->monto, g->estado);
-        hayGastos = 1;
-    } else if (strcmp(g->estado, "Pagado") == 0) {
-        printf("    - %-15s | Monto: " YELLOW "%-6d" RESET " | Estado: " GREEN "%s" RESET "\n", g->categoria, g->monto, g->estado);
-        hayGastos = 1;
-    } else if (strcmp(g->estado, "Recuperado") == 0) {
-        printf("    - %-15s | Monto: " YELLOW "%-6d" RESET " | Estado: \x1b[35m%s" RESET "\n", g->categoria, g->monto, g->estado);
-        hayGastos = 1;
-    }
-    g = list_next(mes->listaGastos);
-}
-        if (!hayGastos) {
-            printf(YELLOW"    No hay gastos registrados para este mes.\n"RESET);
+        for (int j = 0; j < 4 && mostrados < x; j++, mostrados++) {
+            int i = indiceMesActual - mostrados;
+            printf(CYAN"\n╔══════════════════════════════════════════════════════════╗\n"RESET);
+            printf(BOLD"  MES: %s\n"RESET, nombresMeses[i]);
+            Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
+            if (par == NULL) {
+                printf(YELLOW"  [!] No hay datos registrados para este mes.\n"RESET);
+                printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
+                continue;
+            }
+            MesFinanciero *mes = (MesFinanciero*)par->value;
+            if (mes->modificado == 0) {
+                printf(YELLOW"  [!] El mes no ha sido modificado.\n"RESET);
+                printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
+                continue;
+            }
+            printf("  Ingresos:    "GREEN"%d\n"RESET, mes->ingresos);
+            printf("  Ahorro:      "GREEN"%d\n"RESET, mes->ahorrado);
+            printf("  Total Gastos:"GREEN"%d\n"RESET, mes->totalGastos);
+            printf("  Categorías registradas:\n");
+
+            int hayGastos = 0;
+            Gasto *g = list_first(mes->listaGastos);
+            while (g) {
+                if (strcmp(g->estado, "Pendiente") == 0) {
+                    printf("    - %-15s | Monto: " YELLOW "%-6d" RESET " | Estado: " RED "%s" RESET "\n", g->categoria, g->monto, g->estado);
+                    hayGastos = 1;
+                } else if (strcmp(g->estado, "Pagado") == 0) {
+                    printf("    - %-15s | Monto: " YELLOW "%-6d" RESET " | Estado: " GREEN "%s" RESET "\n", g->categoria, g->monto, g->estado);
+                    hayGastos = 1;
+                } else if (strcmp(g->estado, "Recuperado") == 0) {
+                    printf("    - %-15s | Monto: " YELLOW "%-6d" RESET " | Estado: \x1b[35m%s" RESET "\n", g->categoria, g->monto, g->estado);
+                    hayGastos = 1;
+                }
+                g = list_next(mes->listaGastos);
+            }
+            if (!hayGastos) {
+                printf(YELLOW"    No hay gastos registrados para este mes.\n"RESET);
+            }
+            printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
         }
-        printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
+        printf(CYAN"\nMostrando meses %d-%d de %d. Página %d de %d.\n"RESET, inicio, fin, x, pagina, paginas);
+        if (pagina < paginas) {
+            printf("Presiona Enter para continuar...");
+            while (getchar() != '\n');
+            getchar();
+        }
     }
 }
+
 void subMenuMostrarMovimientos(TreeMap *arbol){
 // sub menu que hace llamado a las distinas funciones de visualizacion de los movimientos financieros
     int opcion;
