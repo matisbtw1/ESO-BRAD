@@ -415,6 +415,7 @@ void guardarCSV(TreeMap *arbol, const char *nombreArchivo) {
     fclose(archivo);
     printf("Datos guardados en %s\n", nombreArchivo);
 }
+
 void reiniciarMes(TreeMap *arbol){
     int opcionMes;
     MesFinanciero *datosMes = NULL;
@@ -446,7 +447,20 @@ void reiniciarMes(TreeMap *arbol){
         if (datosMes->modificado == 0) {
             printf("El mes seleccionado no ha sido modificado. Seleccione otro mes.\n");
             datosMes = NULL;
+            continue;
         }
+
+        // Confirmación antes de reiniciar
+        int confirmar = 0;
+        limpiarConsola();
+        printf(RED"\n¿Está seguro que desea reiniciar TODOS los datos del mes %s? (1=Sí, 0=No): "RESET, datosMes->nombreMes);
+        scanf("%d", &confirmar);
+        if (confirmar != 1) {
+            printf("Operación cancelada. El mes no ha sido reiniciado.\n");
+            datosMes = NULL;
+            continue;
+        }
+
     } while (datosMes == NULL);
 
     // Reiniciar los datos del mes
@@ -457,14 +471,12 @@ void reiniciarMes(TreeMap *arbol){
 
     Gasto *gasto = list_first(datosMes->listaGastos);
     while (gasto != NULL) {
-        // Liberar memoria de cada gasto
         gasto->modificado = false; // Marcar como no modificado
         strcpy(gasto->estado, "No Registra"); 
         gasto->monto = 0; // Reiniciar el monto
         gasto = list_next(datosMes->listaGastos);
-
     }
-    printf("El mes %s ha sido reiniciado exitosamente.\n", datosMes->nombreMes);
+    printf(GREEN"El mes %s ha sido reiniciado exitosamente.\n"RESET, datosMes->nombreMes);
 }
 void SubMenuRegistrarMovimiento(TreeMap *arbol){
     int opcion;
