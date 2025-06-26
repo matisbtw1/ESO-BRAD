@@ -53,6 +53,17 @@ interfaz y arreglar prints
 
 int main()
 {
+
+printf(GREEN
+"           ____   ____ _____ ____  \n"
+"          / ___| / ___|  ___|  _ \\ \n"
+"          \\___ \\| |  _| |_  | |_) |\n"
+"           ___) | |_| |  _| |  __/ \n"
+"          |____/ \\____|_|   |_|    \n"
+"                                   \n"
+"      SISTEMA DE GESTIÓN FINANCIERA PERSONAL\n"
+RESET);
+Sleep(4000); 
     habilitarColoresANSI(); // Habilitar colores ANSI en la consola
     SetConsoleOutputCP(CP_UTF8); // Configurar la consola para UTF-8
 
