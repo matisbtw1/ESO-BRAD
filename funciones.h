@@ -61,8 +61,6 @@ void verAhorroMesAMes(TreeMap *arbol);
 void verPorcentajeAhorro(TreeMap *arbol);
 void limpiarConsola();
 void presionaEnter();
-
-
 void tolowercase(char *str);
 void guardarCSV(TreeMap *arbol, const char *nombreArchivo);
 void mostrarXmeses(TreeMap *arbol);
