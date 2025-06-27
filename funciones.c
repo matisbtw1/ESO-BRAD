@@ -269,7 +269,7 @@ void subMenuMostrarMovimientos(TreeMap *arbol){
     do {
         limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
         printf("\n");
-        printf("╔════════════════════════════════════════════════════════════╗\n");
+        printf(GREEN"╔════════════════════════════════════════════════════════════╗\n");
         printf("║                VISUALIZACIÓN DE MOVIMIENTOS                ║\n");
         printf("╠════════════════════════════════════════════════════════════╣\n");
         printf("║                                                            ║\n");
@@ -278,7 +278,7 @@ void subMenuMostrarMovimientos(TreeMap *arbol){
         printf("║                                                            ║\n");
         printf("║  0. Volver al menú principal                               ║\n");
         printf("║                                                            ║\n");
-        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n"RESET);
         printf("\nIngrese su opción: ");
 
         scanf("%d", &opcion);
@@ -498,7 +498,7 @@ void SubMenuRegistrarMovimiento(TreeMap *arbol){
     do {
         limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
         printf("\n");
-        printf("╔════════════════════════════════════════════════════════════╗\n");
+        printf(GREEN"╔════════════════════════════════════════════════════════════╗\n");
         printf("║             REGISTRO Y GESTIÓN DE MOVIMIENTOS              ║\n");
         printf("╠════════════════════════════════════════════════════════════╣\n");
         printf("║                                                            ║\n");
@@ -507,7 +507,7 @@ void SubMenuRegistrarMovimiento(TreeMap *arbol){
         printf("║                                                            ║\n");
         printf("║  0. Volver al menú principal                               ║\n");
         printf("║                                                            ║\n");
-        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n"RESET);
         printf("\nIngrese su opción: ");
         scanf("%d", &opcion);
 
@@ -860,7 +860,7 @@ void subMenumodificarGasto(TreeMap *arbol){
     do {
         limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
         printf("\n");
-        printf("╔════════════════════════════════════════════════════════════╗\n");
+        printf(GREEN"╔════════════════════════════════════════════════════════════╗\n");
         printf("║                      GESTIONAR GASTOS                      ║\n");
         printf("╠════════════════════════════════════════════════════════════╣\n");
         printf("║                                                            ║\n");
@@ -869,7 +869,7 @@ void subMenumodificarGasto(TreeMap *arbol){
         printf("║                                                            ║\n");
         printf("║  0. Volver al menú principal                               ║\n");
         printf("║                                                            ║\n");
-        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n"RESET);
         printf("\n  Ingrese su opción: ");
         scanf("%d", &opcion);   
 
@@ -1010,7 +1010,7 @@ bool verificarArchivoExistente(int *anyo, char *nombreArchivo, int opcion) {
 void accionesAlCSV (TreeMap *arbol, bool *cargado) {
 
     printf("\n");
-    printf("╔════════════════════════════════════════════════════════════╗\n");
+    printf(GREEN"╔════════════════════════════════════════════════════════════╗\n");
     printf("║                 ACCIONES DE ARCHIVO CSV                    ║\n");
     printf("╠════════════════════════════════════════════════════════════╣\n");
     printf("║                                                            ║\n");
@@ -1020,7 +1020,7 @@ void accionesAlCSV (TreeMap *arbol, bool *cargado) {
     printf("║                                                            ║\n");
     printf("║  0. Volver al menú principal                               ║\n");
     printf("║                                                            ║\n");
-    printf("╚════════════════════════════════════════════════════════════╝\n");
+    printf("╚════════════════════════════════════════════════════════════╝\n"RESET);
     printf("\nIngrese su opción: ");
 
     int opcion;
@@ -1158,7 +1158,7 @@ void compararGastosEntreMeses(TreeMap *arbol)
         printf(RED"[!] Uno o ambos meses no han sido modificados. No se puede realizar la comparación.\n"RESET);
         return;
     }
-
+    limpiarConsola();
     printf(GREEN"\n╔══════════════════════════════════════════════════════════╗\n"RESET);
     printf(BOLD"  Comparación de gastos entre %s y %s\n"RESET, mesFinanciero1->nombreMes, mesFinanciero2->nombreMes);
     printf(GREEN"╠══════════════════════════════════════════════════════════╣\n"RESET);
