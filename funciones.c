@@ -1217,7 +1217,7 @@ void subMenuAnalisis(TreeMap *arbol)
     while (true) {
         limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
         printf("\n");
-        printf("╔════════════════════════════════════════════════════════════╗\n"); 
+        printf(GREEN"╔════════════════════════════════════════════════════════════╗\n"); 
         printf("║                      ANÁLISIS FINANCIERO                   ║\n");
         printf("╠════════════════════════════════════════════════════════════╣\n");
         printf("║                                                            ║\n");
@@ -1226,7 +1226,7 @@ void subMenuAnalisis(TreeMap *arbol)
         printf("║                                                            ║\n");
         printf("║  0. Volver al menú principal                               ║\n");
         printf("║                                                            ║\n");
-        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n"RESET);
         printf("\nIngrese su opción: ");
 
         int opcion = leerOpcionValida(0, 2);
@@ -1334,7 +1334,7 @@ void submenuExcedenteMensual(TreeMap *arbol) {
     while (true) {
         limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
         printf("\n");
-        printf("╔════════════════════════════════════════════════════════════╗\n");
+        printf(GREEN"╔════════════════════════════════════════════════════════════╗\n");
         printf("║                 EXCEDENTE MENSUAL Y AHORROS                ║\n");
         printf("╠════════════════════════════════════════════════════════════╣\n");
         printf("║                                                            ║\n");
@@ -1343,7 +1343,7 @@ void submenuExcedenteMensual(TreeMap *arbol) {
         printf("║                                                            ║\n");
         printf("║  0. Volver al menú principal                               ║\n");
         printf("║                                                            ║\n");
-        printf("╚════════════════════════════════════════════════════════════╝\n");
+        printf("╚════════════════════════════════════════════════════════════╝\n"RESET);
         printf("\nIngrese su opción: ");
         scanf("%d", &opcion);
 
