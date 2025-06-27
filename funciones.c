@@ -1231,7 +1231,7 @@ void subMenuAnalisis(TreeMap *arbol)
 
 }
 
-void verAhorroMesAMes(TreeMap *arbol) {
+void verAhorroMesAMes(TreeMap *arbol) { // Función para ver el ahorro mes a mes
     limpiarConsola();
     printf(CYAN"\n╔══════════════════════════════════════════════════════════╗\n"RESET);
     printf(BOLD"  AHORRADO MES A MES\n"RESET);
@@ -1243,25 +1243,28 @@ void verAhorroMesAMes(TreeMap *arbol) {
     char mesConMinimo[20] = "";
     int hayDatos = 0;
 
-    Pair *par = firstTreeMap(arbol);
-    while (par != NULL) {
+    Pair *par = firstTreeMap(arbol); // Iterar sobre los meses en el árbol
+    while (par != NULL) { // Iterar sobre los pares del árbol
         MesFinanciero *datosMes = (MesFinanciero*)par->value;
 
-        if (datosMes->modificado == 1) {
+        if (datosMes->modificado == 1) { // Solo mostrar meses modificados
             printf("  "BOLD"%s"RESET" | Ingresos: "GREEN"%d"RESET" | Gastos Totales: "RED"%d"RESET" | Ahorro: "YELLOW"%d"RESET"\n",
                 datosMes->nombreMes, datosMes->ingresos, datosMes->totalGastos, datosMes->ahorrado);
 
-            if (!hayDatos) {
+            if (!hayDatos) { // Si es el primer mes modificado
+                // Inicializar los valores máximos y mínimos
                 maximoAhorro = minimoAhorro = datosMes->ahorrado;
                 strcpy(mesConMaximo, datosMes->nombreMes);
                 strcpy(mesConMinimo, datosMes->nombreMes);
                 hayDatos = 1;
             }
-            if (datosMes->ahorrado > maximoAhorro) {
+            if (datosMes->ahorrado > maximoAhorro) { // Actualizar máximo y mínimo
+                // Si el ahorro del mes actual es mayor que el máximo, actualizar
                 maximoAhorro = datosMes->ahorrado;
                 strcpy(mesConMaximo, datosMes->nombreMes);
             }
-            if (datosMes->ahorrado < minimoAhorro) {
+            if (datosMes->ahorrado < minimoAhorro) { // Si el ahorro del mes actual es menor que el mínimo, actualizar
+                // Si el ahorro del mes actual es menor que el mínimo, actualizar
                 minimoAhorro = datosMes->ahorrado;
                 strcpy(mesConMinimo, datosMes->nombreMes);
             }
@@ -1269,29 +1272,29 @@ void verAhorroMesAMes(TreeMap *arbol) {
         par = nextTreeMap(arbol);
     }
 
-    if (!hayDatos) {
+    if (!hayDatos) { // Si no hay meses modificados, mostrar mensaje
         printf(RED"\nNo hay meses registrados o modificados.\n"RESET);
         printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
         return;
     }
-
+    // Mostrar resumen de ahorro
     printf(CYAN"╠══════════════════════════════════════════════════════════╣\n"RESET);
     printf("  "BOLD"Ahorro Máximo:"RESET" "YELLOW"%d"RESET" en "GREEN"%s"RESET"\n", maximoAhorro, mesConMaximo);
     printf("  "BOLD"Ahorro Mínimo:"RESET" "YELLOW"%d"RESET" en "RED"%s"RESET"\n", minimoAhorro, mesConMinimo);
     printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
 }
 
-void verPorcentajeAhorro(TreeMap *arbol) {
-    limpiarConsola();
+void verPorcentajeAhorro(TreeMap *arbol) { // Función para ver el porcentaje de ahorro respecto a ingresos por mes
+    limpiarConsola(); 
     printf(CYAN"\n╔══════════════════════════════════════════════════════════╗\n"RESET);
     printf(BOLD"  PORCENTAJE DE AHORRO RESPECTO A INGRESOS POR MES\n"RESET);
     printf(CYAN"╠══════════════════════════════════════════════════════════╣\n"RESET);
 
-    Pair *par = firstTreeMap(arbol);
+    Pair *par = firstTreeMap(arbol); // Iterar sobre los meses en el árbol
     int hayDatos = 0;
-    while (par != NULL) {
+    while (par != NULL) { // Iterar sobre los pares del árbol
         MesFinanciero *datosMes = (MesFinanciero*)par->value;
-        if (datosMes->modificado == 1 && datosMes->ingresos > 0) {
+        if (datosMes->modificado == 1 && datosMes->ingresos > 0) { // Solo mostrar meses modificados con ingresos
             float porcentajeAhorro = ((float)datosMes->ahorrado / datosMes->ingresos) * 100.0;
             printf("  "BOLD"%s"RESET" | Ingresos: "GREEN"%d"RESET" | Ahorro: "YELLOW"%d"RESET" | "CYAN"Porcentaje: "GREEN"%.2f%%"RESET"\n",
                    datosMes->nombreMes, datosMes->ingresos, datosMes->ahorrado, porcentajeAhorro);
