@@ -275,15 +275,25 @@ Seleccione una opción (1 o 2): 2
 **CONTRIBUCIONES INTEGRANTES**
 
 - **Francisco:**  
+  Manejo CSV. Registrar movimientos. Lógica para guardar CSV
+  
   Registro de movimientos financieros. Implementación de la lógica para registrar ingresos y gastos, validaciones y estructura de datos.
 
 - **Alfonso:**  
-  Resúmenes y visualización de meses. Desarrollo de funciones para mostrar resúmenes mensuales, paginación y filtrado de datos.
+  Registrar movimientos. Elaboración y cambios de interfaz. D
+  
+  
+  Definición e implementación de TDAS.Resúmenes y visualización de meses. Desarrollo de funciones para mostrar resúmenes mensuales, paginación y filtrado de datos.
 
 - **Matias:**  
+  Registrar movimientos. Marcar gasto como pagados, gastos planificados
+  
+  
   Gastos planificados y gestión de pendientes. Programación de funciones para ver, marcar y mover gastos pendientes entre meses.
 
 - **Juan Pablo:**  
+  Registrar movimientos. Marcar gasto como pagados, gastos planificados
+  
   Historial, análisis y excedente. Implementación de análisis comparativo, tendencias, excedente mensual y funciones de ahorro.
 
 - **Todos:**  
