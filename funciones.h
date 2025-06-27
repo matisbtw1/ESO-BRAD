@@ -91,23 +91,8 @@ void subMenuMostrarMovimientos(TreeMap *arbol);
 
 // Esta funcion se encarga de mostrar el mes actual y sus movimientos financieros.
 void mostrarMesActual(TreeMap *arbol);
-<<<<<<< HEAD
-void SubMenuRegistrarMovimiento(TreeMap *arbol);
-void reiniciarMes(TreeMap *arbol);
-int leerOpcionValida(int min, int max);
-void subMenuAnalisis(TreeMap *arbol);
-void compararGastosEntreMeses(TreeMap *arbol);
-void submenuExcedenteMensual(TreeMap *arbol);
-void verAhorroMesAMes(TreeMap *arbol);
-void verPorcentajeAhorro(TreeMap *arbol);
-void limpiarConsola();
-void presionaEnter();
-void tolowercase(char *str);
-void guardarCSV(TreeMap *arbol, const char *nombreArchivo);
-=======
 
 // Esta funcion muestra los X ultimos meses registrados en el árbol de búsqueda.
->>>>>>> d7d6ab8aa0ac94f88f53d32a242516e0bc624428
 void mostrarXmeses(TreeMap *arbol);
 
 // Esta funcion muestra un submenu en el cual aparecen la opcion de registrar y eliminar un mes financiero.
