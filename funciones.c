@@ -204,7 +204,7 @@ void mostrarXmeses(TreeMap *arbol) {
         printf(CYAN"\n--- Página %d de %d (meses %d-%d de %d) ---\n"RESET, pagina, paginas, inicio, fin, x);
         // Mostrar los meses correspondientes a la página actual
         for (int j = 0; j < 4 && mostrados < x; j++, mostrados++) {
-            int i = indiceMesActual - mostrados;
+            int i = indiceMesActual - (x-1) + mostrados;
             printf(CYAN"\n╔══════════════════════════════════════════════════════════╗\n"RESET);
             printf(BOLD"  MES: %s\n"RESET, nombresMeses[i]);
             Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
