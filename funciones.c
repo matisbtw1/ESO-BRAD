@@ -543,18 +543,18 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         limpiarConsola();
         int ingresosAux = 0;
         printf(CYAN"\nIngrese el monto de ingresos para el mes %s: "RESET, mes);
-        scanf("%d", &ingresosAux);
+        scanf("%d", &ingresosAux); // Leer el monto de ingresos del usuario
         printf(">> ¿Confirma el ingreso de "YELLOW"%d"RESET" para el mes %s? ("GREEN"1 = Sí"RESET", "RED"0 = No"RESET"): ", ingresosAux, mes);
-        int confirmarIngreso;
+        int confirmarIngreso; // Variable para confirmar el ingreso
         scanf("%d", &confirmarIngreso);
         if (confirmarIngreso == 1) {
-            datosMes->ingresos += ingresosAux;
-            datosMes->ahorrado += ingresosAux;
+            datosMes->ingresos += ingresosAux; // Sumar los ingresos al mes
+            datosMes->ahorrado += ingresosAux; // Sumar los ingresos al ahorro
             printf(GREEN"[OK] Ingreso de %d registrado para el mes %s.\n"RESET, ingresosAux, mes);
         } else {
             printf(YELLOW"[INFO] Ingreso no confirmado.\n"RESET);
         }
-        if (confirmarIngreso == 1) break;
+        if (confirmarIngreso == 1) break; // Salir del bucle si el ingreso fue confirmado
     }
 
     int opcionGasto;
@@ -574,7 +574,7 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
         printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
 
         printf("\nSeleccione una categoría para modificar ("YELLOW"0 para salir"RESET"): ");
-        scanf("%d", &opcionGasto);
+        scanf("%d", &opcionGasto); // Leer la opción de gasto del usuario
         if (opcionGasto == 0) break;
 
         if (opcionGasto < 1 || opcionGasto >= idx) {
@@ -582,22 +582,22 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
             continue;
         }
 
-        Gasto* g = list_first(datosMes->listaGastos);
+        Gasto* g = list_first(datosMes->listaGastos); // Obtener el primer gasto de la lista
         for (int i = 1; i < opcionGasto; i++) {
-            g = list_next(datosMes->listaGastos);
+            g = list_next(datosMes->listaGastos); // Avanzar al siguiente gasto hasta llegar al seleccionado
         }
 
         if (g->modificado) {
-            printf(YELLOW"El gasto ya ha sido modificado. No se puede cambiar.\n"RESET);
+            printf(YELLOW"El gasto ya ha sido modificado. No se puede cambiar.\n"RESET); // Validar si el gasto ya ha sido modificado
             continue;
         }
 
         while (true) { // Bucle para modificar el monto del gasto
-            int nuevoMonto;
+            int nuevoMonto; // Variable para almacenar el nuevo monto del gasto
             printf("Ingrese el nuevo monto para la categoría "BOLD"%s"RESET": ", g->categoria);
             scanf("%d", &nuevoMonto);
             printf("Confirma el cambio de monto a "YELLOW"%d"RESET" para la categoría %s? ("GREEN"1=Sí"RESET", "RED"0=No"RESET"): ", nuevoMonto, g->categoria);
-            int confirmarCambio;
+            int confirmarCambio; // Variable para confirmar el cambio de monto
             scanf("%d", &confirmarCambio);
             if (confirmarCambio == 1) {
                 g->monto = nuevoMonto;
@@ -613,11 +613,11 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
 
         do {
             printf("Ingrese su opción: "); // Solicitar opción de estado al usuario.
-            scanf("%d", &opcionEstado);
+            scanf("%d", &opcionEstado); // Leer la opción de estado del usuario
         } while (opcionEstado < 1 || opcionEstado > 2);
 
         if (opcionEstado == 1) {
-            strcpy(g->estado, "Pendiente");
+            strcpy(g->estado, "Pendiente"); // Cambiar el estado del gasto a "Pendiente"
         } else if (opcionEstado == 2) {
             if (datosMes->ahorrado < g->monto) {
                 printf(RED"No hay suficiente dinero para pagar este gasto.\n"RESET);
@@ -625,30 +625,20 @@ void registrarMovimientoFinanciero(TreeMap *arbol) {
                 printf(YELLOW"El gasto se ha dejado como pendiente.\n"RESET);
                 continue;
             }
-            strcpy(g->estado, "Pagado");
-            datosMes->ahorrado -= g->monto;
-            datosMes->totalGastos += g->monto;
+            strcpy(g->estado, "Pagado"); // Cambiar el estado del gasto a "Pagado"
+            datosMes->ahorrado -= g->monto; // Restar el monto del gasto al ahorro del mes
+            datosMes->totalGastos += g->monto; // Sumar el monto del gasto al total de gastos del mes
             printf(GREEN"Gasto marcado como pagado\n"RESET);
         }
-        g->modificado = true;
+        g->modificado = true; // Marcar el gasto como modificado
     }
-    datosMes->modificado = 1;
+    datosMes->modificado = 1; // Marcar el mes como modificado
     limpiarConsola();
     printf(GREEN"\n¡Movimiento financiero actualizado para %s!\nEl mes ha sido cerrado\n"RESET, mes);
 }
 
-// el ingreso se ira a ahorrado y de ahi se descontara lo que tenga que pagarse para cada cuenta, el ahorrado tendra dinero que permitira pagar a futuro
-// si marco wea pagado que se desucente del ahorrado, si no se paga se queda en pendiente y no se descuenta del ahorrado
-
-//PENDIENTE HACER EN LA FUNCION DE ARRIBA
-
-// Ingreso se puedan modificar
-// Gastos se puedan modificar
-// preguntar si quiere aceptar el ingreso del gasto o no, si no se acepta se deja como pendiente si no queda como tal (no se puede modificar el estado de un gasto pagado)
-
-
 void marcarGastoComoPagado(TreeMap *arbol) { // Función para marcar un gasto como pagado
-    int opcionMes;
+    int opcionMes; // Variable para almacenar la opción del mes seleccionado
     MesFinanciero *datosMes = NULL;
     do {
         limpiarConsola();
@@ -658,30 +648,30 @@ void marcarGastoComoPagado(TreeMap *arbol) { // Función para marcar un gasto co
         printf("  Ingrese 0 para volver al menú principal.\n");
         printf("  Seleccione el mes para marcar gasto como pagado:\n");
         for (int i = 0; i < 12; i++) {
-            printf("    %2d. %s\n", i + 1, nombresMeses[i]);
+            printf("    %2d. %s\n", i + 1, nombresMeses[i]); // Mostrar los meses disponibles
         }
         printf(GREEN"╚══════════════════════════════════════════════════════════╝\n"RESET);
         printf("\nIngrese el número del mes (1-12): ");
-        scanf("%d", &opcionMes);
+        scanf("%d", &opcionMes); // Leer la opción del mes seleccionado
 
         if (opcionMes == 0) {
-            printf(YELLOW"Volviendo al menú principal...\n"RESET);
+            printf(YELLOW"Volviendo al menú principal...\n"RESET); // Si el usuario ingresa 0, salir del bucle
             return;
         }
         if (opcionMes < 1 || opcionMes > 12) {
-            printf(RED"Opción inválida. Intente nuevamente.\n"RESET);
+            printf(RED"Opción inválida. Intente nuevamente.\n"RESET); // Validar que la opción ingresada esté dentro del rango válido
             continue;
         }
 
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[opcionMes - 1]);
         if (!par) {
-            printf(RED"El mes seleccionado no existe. Intente nuevamente.\n"RESET);
+            printf(RED"El mes seleccionado no existe. Intente nuevamente.\n"RESET); // Validar si el mes existe en el árbol
             continue;
         }
 
         datosMes = (MesFinanciero*)par->value; // Obtener los datos del mes seleccionado
         if (datosMes->modificado == 0) {
-            printf(YELLOW"El mes seleccionado no ha sido modificado. Seleccione otro mes.\n"RESET);
+            printf(YELLOW"El mes seleccionado no ha sido modificado. Seleccione otro mes.\n"RESET); 
             datosMes = NULL;
         }
     } while (datosMes == NULL);
@@ -694,20 +684,20 @@ void marcarGastoComoPagado(TreeMap *arbol) { // Función para marcar un gasto co
 
     int idx = 1;
     int indicesPendientes[100]; // Asume máximo 100 gastos pendientes por mes
-    Gasto* g = list_first(datosMes->listaGastos);
-    int hayPendientes = 0;
+    Gasto* g = list_first(datosMes->listaGastos); // Obtener el primer gasto de la lista
+    int hayPendientes = 0; 
     int i = 1;
     while (g) {
         if (strcmp(g->estado, "Pendiente") == 0) {
             printf("    %2d. %-15s | Monto: "YELLOW"%-6d"RESET" | Estado: "RED"%s"RESET"\n", idx, g->categoria, g->monto, g->estado);
             indicesPendientes[idx] = i; // Guarda el índice real en la lista
             idx++;
-            hayPendientes = 1;
+            hayPendientes = 1; // Indica que hay al menos un gasto pendiente
         }
-        g = list_next(datosMes->listaGastos);
+        g = list_next(datosMes->listaGastos); // Avanzar al siguiente gasto
         i++;
     }
-    if (!hayPendientes) {
+    if (!hayPendientes) { // Validar si hay gastos pendientes
         printf(YELLOW"    No hay gastos pendientes para el mes seleccionado.\n"RESET);
         printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
         return;
@@ -717,7 +707,7 @@ void marcarGastoComoPagado(TreeMap *arbol) { // Función para marcar un gasto co
     int opcionGasto; // Variable para almacenar la opción del gasto a marcar como pagado
     do {
         printf("\nSeleccione el gasto pendiente a marcar como pagado ("YELLOW"0 para salir"RESET"): "); 
-        scanf("%d", &opcionGasto);
+        scanf("%d", &opcionGasto); // Leer la opción del gasto seleccionado
         if (opcionGasto == 0) break;
 
         if (opcionGasto < 1 || opcionGasto >= idx) {
@@ -726,26 +716,26 @@ void marcarGastoComoPagado(TreeMap *arbol) { // Función para marcar un gasto co
         }
 
         // Buscar el gasto pendiente correspondiente
-        g = list_first(datosMes->listaGastos);
+        g = list_first(datosMes->listaGastos); 
         int realIdx = indicesPendientes[opcionGasto]; // Obtener el índice real del gasto pendiente
         for (int j = 1; j < realIdx; j++) {
-            g = list_next(datosMes->listaGastos);
+            g = list_next(datosMes->listaGastos); // Avanzar al siguiente gasto hasta llegar al seleccionado
         }
 
         if (strcmp(g->estado, "Pagado") == 0) {
-            printf(YELLOW"El gasto ya está marcado como pagado.\n"RESET);
+            printf(YELLOW"El gasto ya está marcado como pagado.\n"RESET); // Validar si el gasto ya está marcado como pagado
             continue;
         }
         if (datosMes->ahorrado < g->monto) {
-            printf(RED"No hay suficiente dinero para pagar este gasto.\n"RESET);
-            strcpy(g->estado, "Pendiente");
+            printf(RED"No hay suficiente dinero para pagar este gasto.\n"RESET); // Validar si hay suficiente dinero para pagar el gasto
+            strcpy(g->estado, "Pendiente"); 
             printf(YELLOW"El gasto se ha dejado como pendiente.\n"RESET);
             continue;
         }
-        strcpy(g->estado, "Pagado");
+        strcpy(g->estado, "Pagado"); // Cambiar el estado del gasto a "Pagado"
         printf(GREEN"Gasto marcado como pagado: %s | Monto: "YELLOW"%d"RESET"\n"RESET, g->categoria, g->monto);
         datosMes->ahorrado -= g->monto; // Descontar del ahorrado
-        datosMes->totalGastos += g->monto;
+        datosMes->totalGastos += g->monto; // Sumar al total de gastos del mes
     } while (opcionGasto != 0);
 
     printf(GREEN"\nOperación finalizada. Volviendo al menú de gestión de gastos.\n"RESET);
@@ -753,19 +743,19 @@ void marcarGastoComoPagado(TreeMap *arbol) { // Función para marcar un gasto co
 
 void recuperarGastosPendientes(TreeMap *arbol) { // Función para recuperar gastos pendientes de meses anteriores
     MesFinanciero *mesSigActual = NULL;
-    int indiceMesActual = -1;
-    for (int i = 11; i >= 0; i--) {
+    int indiceMesActual = -1; 
+    for (int i = 11; i >= 0; i--) { // Iterar desde el último mes (Diciembre) hasta el primero (Enero)
         Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
         if (par != NULL) {
             MesFinanciero *mes = (MesFinanciero*)par->value;
-            if (mes->modificado == 1) {
-                if (i + 1 > 12) {
+            if (mes->modificado == 1) { // Verificar si el mes ha sido modificado
+                if (i + 1 > 12) { // Validar si hay un mes siguiente
                     printf("No hay meses siguientes para recuperar gastos pendientes.\n");
                     return;
                 }
-                Pair *parSig = searchTreeMap(arbol, (void*)nombresMeses[i + 1]);
-                MesFinanciero *mesSig = (MesFinanciero*)parSig->value;
-                mesSigActual = mesSig;
+                Pair *parSig = searchTreeMap(arbol, (void*)nombresMeses[i + 1]); // Buscar el mes siguiente
+                MesFinanciero *mesSig = (MesFinanciero*)parSig->value; 
+                mesSigActual = mesSig; // Asignar el mes siguiente como destino de recuperación
                 indiceMesActual = i+1; 
                 break;
             }
@@ -780,17 +770,18 @@ void recuperarGastosPendientes(TreeMap *arbol) { // Función para recuperar gast
     printf("Se usarán 'Otros Gastos' del mes %s como destino de recuperacion.\n", mesSigActual->nombreMes);
 
     Gasto *otrosActual = NULL;
-    Gasto *gasto = list_first(mesSigActual->listaGastos);
+    Gasto *gasto = list_first(mesSigActual->listaGastos); // Obtener el primer gasto de la lista del mes siguiente
+    // Buscar el gasto de "Otros Gastos" en la lista del mes siguiente
     while (gasto != NULL) {
         if (strcmp(gasto->categoria, "Otros Gastos") == 0) {
             otrosActual = gasto;
             break;
         }
-        gasto = list_next(mesSigActual->listaGastos);
+        gasto = list_next(mesSigActual->listaGastos); // Avanzar al siguiente gasto
     }
 
     for (int i = 0; i < indiceMesActual; i++) {
-        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]);
+        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[i]); // Buscar el mes en el árbol
         if (par == NULL) continue;
 
         MesFinanciero *mes = (MesFinanciero*)par->value;
@@ -799,11 +790,12 @@ void recuperarGastosPendientes(TreeMap *arbol) { // Función para recuperar gast
             continue;
         }
 
-        int totalGastosPendientes = 0;
+        int totalGastosPendientes = 0; // Variable para almacenar el total de gastos pendientes del mes
+        // Recorrer la lista de gastos del mes para calcular el total de gastos pendientes
         Gasto *gastoPendiente = list_first(mes->listaGastos);
         while (gastoPendiente != NULL) {
             if (strcmp(gastoPendiente->estado, "Pendiente") == 0) {
-                totalGastosPendientes += gastoPendiente->monto;
+                totalGastosPendientes += gastoPendiente->monto; // Sumar el monto del gasto pendiente al total
             }
             gastoPendiente = list_next(mes->listaGastos); 
         }
@@ -812,13 +804,13 @@ void recuperarGastosPendientes(TreeMap *arbol) { // Función para recuperar gast
         int respuesta;
         printf("\nEl mes %s tiene %d en gastos pendientes.\n", mes->nombreMes, totalGastosPendientes);
         printf("¿Deseas Trasladarlos al mes actual (%s) como 'Otros Gastos'? (1=Sí, 0=No): ", mesSigActual->nombreMes);
-        scanf("%d", &respuesta);
+        scanf("%d", &respuesta); // Leer la respuesta del usuario
         if (respuesta == 0) {
-            printf("No se trasladarán los gastos pendientes del mes %s.\n", mes->nombreMes);
+            printf("No se trasladarán los gastos pendientes del mes %s.\n", mes->nombreMes); 
             continue;
         }
 
-        gastoPendiente = list_first(mes->listaGastos);
+        gastoPendiente = list_first(mes->listaGastos); 
         while (gastoPendiente != NULL) {
             if (strcmp(gastoPendiente->estado, "Pendiente") == 0) {
                 otrosActual->monto += gastoPendiente->monto; // Sumar al total de "Otros Gastos"
@@ -854,12 +846,12 @@ void subMenumodificarGasto(TreeMap *arbol){
         switch (opcion) {
             case 1:
                 limpiarConsola();
-                marcarGastoComoPagado(arbol);
+                marcarGastoComoPagado(arbol); // Marcar un gasto pendiente como pagado
                 presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 2:
                 limpiarConsola();
-                recuperarGastosPendientes(arbol);
+                recuperarGastosPendientes(arbol); // Recuperar gastos pendientes de meses anteriores
                 presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 0:
@@ -883,13 +875,13 @@ void mostrarPorcentajesPorCategorias(TreeMap *arbol)
     printf(CYAN"╠══════════════════════════════════════════════════════════╣\n"RESET);
 
     for (int i = 0; i < 12; i++) {
-        printf("  %2d. %s\n", i + 1, nombresMeses[i]);
+        printf("  %2d. %s\n", i + 1, nombresMeses[i]); // Mostrar los meses disponibles
     }
     printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
 
     while (1)
     {
-        int opcion;
+        int opcion; // Variable para almacenar la opción del mes seleccionado
         printf("\nIngrese el número del mes ("YELLOW"1-12"RESET") o "GREEN"0 para confirmar"RESET": ");
         scanf("%d", &opcion);
 
@@ -900,19 +892,19 @@ void mostrarPorcentajesPorCategorias(TreeMap *arbol)
             continue;
         }
 
-        bool yaSeleccionado = false;
+        bool yaSeleccionado = false; // Validar si el mes ya ha sido seleccionado
         for (int j = 0; j < cantidad; j++) {
             if (seleccionado[j] == opcion) {
-                yaSeleccionado = true;
+                yaSeleccionado = true; // El mes ya ha sido seleccionado
                 break;
             }
         }
 
         if (yaSeleccionado) {
-            printf(YELLOW"El mes %s ya ha sido seleccionado.\n"RESET, nombresMeses[opcion - 1]);
+            printf(YELLOW"El mes %s ya ha sido seleccionado.\n"RESET, nombresMeses[opcion - 1]); // Informar al usuario que el mes ya ha sido seleccionado
         } else {
-            seleccionado[cantidad++] = opcion;
-            printf(GREEN"Mes %s seleccionado.\n"RESET, nombresMeses[opcion - 1]);
+            seleccionado[cantidad++] = opcion; // Agregar el mes seleccionado al arreglo
+            printf(GREEN"Mes %s seleccionado.\n"RESET, nombresMeses[opcion - 1]); 
         }
     }
 
@@ -926,15 +918,15 @@ void mostrarPorcentajesPorCategorias(TreeMap *arbol)
     printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
 
     for (int i = 0; i < cantidad; i++) {
-        int mesSeleccionado = seleccionado[i] - 1;
-        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[mesSeleccionado]);
+        int mesSeleccionado = seleccionado[i] - 1; //Indice del mes seleccionado
+        Pair *par = searchTreeMap(arbol, (void*)nombresMeses[mesSeleccionado]); // Buscar el mes en el árbol
 
         if (par == NULL) {
             printf(RED"\n[%s] No tiene datos registrados.\n"RESET, nombresMeses[mesSeleccionado]);
             continue;
         }
 
-        MesFinanciero *mes = (MesFinanciero*)par->value;
+        MesFinanciero *mes = (MesFinanciero*)par->value; // Obtener los datos del mes seleccionado
 
         if (mes->totalGastos == 0) {
             printf(YELLOW"\n[%s] No hay gastos registrados.\n"RESET, mes->nombreMes);
@@ -945,16 +937,17 @@ void mostrarPorcentajesPorCategorias(TreeMap *arbol)
         printf("  "BOLD"Total Gastos: "YELLOW"%d"RESET"\n", mes->totalGastos);
         printf("  "CYAN"---------------------------------------------"RESET"\n");
 
-        Gasto *gasto = list_first(mes->listaGastos);
+        Gasto *gasto = list_first(mes->listaGastos); // Obtener el primer gasto de la lista
         int hayPagados = 0;
         while (gasto) {
-            if (strcasecmp(gasto->estado, "Pagado") == 0) {
-                float porcentaje = (float)gasto->monto / mes->totalGastos * 100;
+            if (strcasecmp(gasto->estado, "Pagado") == 0) { // Validar si el gasto está pagado
+                float porcentaje = (float)gasto->monto / mes->totalGastos * 100; // Calcular el porcentaje del gasto respecto al total de gastos
+                // Imprimir el gasto con su categoría, monto y porcentaje
                 printf("  Categoría: %-15s | Monto: "YELLOW"%6d"RESET" | Porcentaje: "GREEN"%.2f%%"RESET"\n",
-                       gasto->categoria, gasto->monto, porcentaje);
+                       gasto->categoria, gasto->monto, porcentaje); 
                 hayPagados = 1;
             }
-            gasto = list_next(mes->listaGastos);
+            gasto = list_next(mes->listaGastos); // Avanzar al siguiente gasto
         }
         if (!hayPagados) {
             printf(YELLOW"  No hay gastos pagados en este mes.\n"RESET);
@@ -965,18 +958,18 @@ void mostrarPorcentajesPorCategorias(TreeMap *arbol)
 
 bool verificarArchivoExistente(int *anyo, char *nombreArchivo, int opcion) {
     if (opcion == 1) {
-        printf("Ingrese el año del archivo a cargar: ");
+        printf("Ingrese el año del archivo a cargar: "); // Solicitar el año del archivo a cargar
     } else if (opcion == 2) {
-        printf("Ingrese el año para crear un nuevo archivo: ");
+        printf("Ingrese el año para crear un nuevo archivo: "); // Solicitar el año para crear un nuevo archivo
     } else if (opcion == 3) {
-        printf("Ingrese el año del archivo a guardar: ");
+        printf("Ingrese el año del archivo a guardar: "); // Solicitar el año del archivo a guardar
     } else {
         return false; // Opción inválida
     }
-    scanf("%d", anyo);
-    sprintf(nombreArchivo, "finanzas_%d.csv", *anyo);
-    FILE *archivo = fopen(nombreArchivo, "r");
-    if (archivo) {
+    scanf("%d", anyo); // Leer el año ingresado por el usuario
+    sprintf(nombreArchivo, "finanzas_%d.csv", *anyo); // Formatear el nombre del archivo con el año ingresado
+    FILE *archivo = fopen(nombreArchivo, "r"); // Intentar abrir el archivo en modo lectura
+    if (archivo) { // Si el archivo se abre correctamente, significa que ya existe
         fclose(archivo);
         return true; // El archivo ya existe
     } else {
@@ -1001,7 +994,7 @@ void accionesAlCSV (TreeMap *arbol, bool *cargado) {
     printf("╚════════════════════════════════════════════════════════════╝\n"RESET);
     printf("\nIngrese su opción: ");
 
-    int opcion;
+    int opcion; // Variable para almacenar la opción seleccionada por el usuario
     scanf("%d", &opcion);
 
     int anyo;
@@ -1009,23 +1002,23 @@ void accionesAlCSV (TreeMap *arbol, bool *cargado) {
     switch (opcion) {
         case 1:
             if (*cargado) {
-                printf("[!] Ya se ha cargado un archivo de finanzas.\n");
+                printf("[!] Ya se ha cargado un archivo de finanzas.\n"); // Informar al usuario que ya se ha cargado un archivo
                 return;
             }
             if (!verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
-                printf("No se pudo verificar el archivo. Asegúrate de que el archivo exista.\n");
+                printf("No se pudo verificar el archivo. Asegúrate de que el archivo exista.\n"); // Informar al usuario que no se pudo verificar el archivo
                 return;
             }
             *cargado = true; // Marcar que se ha cargado un archivo CSV
-            cargarMovimientosDesdeCSV(arbol, nombreArchivo);
+            cargarMovimientosDesdeCSV(arbol, nombreArchivo); // Cargar los movimientos desde el archivo CSV
             printf("[OK] Archivo de finanzas cargado correctamente.\n");
             break;
         case 2:
             if (verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
-                printf("[!] El archivo ya existe, no se sobreescribirá.\n");
+                printf("[!] El archivo ya existe, no se sobreescribirá.\n"); // Informar al usuario que el archivo ya existe
                 return; 
             }
-            copiarArchivoCSV("plantilla.csv", nombreArchivo);
+            copiarArchivoCSV("plantilla.csv", nombreArchivo); // Copiar la plantilla a un nuevo archivo
             break;
         case 3:
             if (!*cargado) {
@@ -1033,10 +1026,10 @@ void accionesAlCSV (TreeMap *arbol, bool *cargado) {
                 return;
             }
             if (!verificarArchivoExistente(&anyo, nombreArchivo, opcion)) {
-                printf("No se pudo verificar el archivo. Asegúrate de que el archivo exista.\n");
+                printf("No se pudo verificar el archivo. Asegúrate de que el archivo exista.\n"); // Informar al usuario que no se pudo verificar el archivo
                 return;
             }
-            guardarCSV(arbol, nombreArchivo);
+            guardarCSV(arbol, nombreArchivo); // Guardar los cambios en el archivo CSV actual
             break;
         case 0:
             printf("Volviendo al menú principal...\n");
@@ -1094,19 +1087,19 @@ void compararGastosEntreMeses(TreeMap *arbol)
     printf(CYAN"╠══════════════════════════════════════════════════════════╣\n"RESET);
 
     for (int i = 0; i < 12; i++) {
-        printf("  %2d. %s\n", i + 1, nombresMeses[i]);
+        printf("  %2d. %s\n", i + 1, nombresMeses[i]); // Mostrar los meses disponibles
     }
     printf(CYAN"╚══════════════════════════════════════════════════════════╝\n"RESET);
 
-    int mes1, mes2;
+    int mes1, mes2; // Variables para almacenar los meses seleccionados por el usuario
     do {
         printf("\nIngrese el número del primer mes ("YELLOW"1-12"RESET"): ");
-        scanf("%d", &mes1);
+        scanf("%d", &mes1); // Leer el primer mes seleccionado por el usuario
     } while (mes1 < 1 || mes1 > 12);
 
     do {
         printf("Ingrese el número del segundo mes ("YELLOW"1-12"RESET"): ");
-        scanf("%d", &mes2);
+        scanf("%d", &mes2); // Leer el segundo mes seleccionado por el usuario
     } while (mes2 < 1 || mes2 > 12);
 
     if (mes1 == mes2) {
@@ -1117,20 +1110,20 @@ void compararGastosEntreMeses(TreeMap *arbol)
     printf(CYAN"\n¿Respecto a qué mes desea comparar los gastos?\n"RESET);
     printf("  1. %s\n", nombresMeses[mes1 - 1]); 
     printf("  2. %s\n", nombresMeses[mes2 - 1]);
-    printf("Seleccione una opción ("YELLOW"1 o 2"RESET"): ");
+    printf("Seleccione una opción ("YELLOW"1 o 2"RESET"): "); // Leer la opción de comparación del usuario
     int opcion; 
     scanf("%d", &opcion);
 
-    Pair *par1 = searchTreeMap(arbol, (void*)nombresMeses[mes1 - 1]);
-    Pair *par2 = searchTreeMap(arbol, (void*)nombresMeses[mes2 - 1]);
+    Pair *par1 = searchTreeMap(arbol, (void*)nombresMeses[mes1 - 1]); // Buscar el primer mes en el árbol
+    Pair *par2 = searchTreeMap(arbol, (void*)nombresMeses[mes2 - 1]); // Buscar el segundo mes en el árbol
 
     if (!par1 || !par2) {
         printf(RED"[!] Uno o ambos meses no existen en los registros.\n"RESET);
         return;
     }
 
-    MesFinanciero *mesFinanciero1 = (MesFinanciero*)par1->value;
-    MesFinanciero *mesFinanciero2 = (MesFinanciero*)par2->value;
+    MesFinanciero *mesFinanciero1 = (MesFinanciero*)par1->value; // Obtener los datos del primer mes seleccionado
+    MesFinanciero *mesFinanciero2 = (MesFinanciero*)par2->value; // Obtener los datos del segundo mes seleccionado
 
     if(mesFinanciero1->modificado == 0 || mesFinanciero2->modificado == 0) {
         printf(RED"[!] Uno o ambos meses no han sido modificados. No se puede realizar la comparación.\n"RESET);
@@ -1141,8 +1134,8 @@ void compararGastosEntreMeses(TreeMap *arbol)
     printf(BOLD"  Comparación de gastos entre %s y %s\n"RESET, mesFinanciero1->nombreMes, mesFinanciero2->nombreMes);
     printf(GREEN"╠══════════════════════════════════════════════════════════╣\n"RESET);
 
-    Gasto *gasto1 = list_first(mesFinanciero1->listaGastos);
-    Gasto *gasto2 = list_first(mesFinanciero2->listaGastos);
+    Gasto *gasto1 = list_first(mesFinanciero1->listaGastos); // Obtener el primer gasto de la lista del primer mes
+    Gasto *gasto2 = list_first(mesFinanciero2->listaGastos); // Obtener el primer gasto de la lista del segundo mes
 
     printf(BOLD"  %-15s | %-10s | %-10s | Variación\n"RESET, "Categoría", mesFinanciero1->nombreMes, mesFinanciero2->nombreMes);
     printf(CYAN"  --------------------------------------------------------\n"RESET);
@@ -1151,20 +1144,20 @@ void compararGastosEntreMeses(TreeMap *arbol)
         if (strcmp(gasto1->estado, "No Registra") == 0 && strcmp(gasto2->estado, "No Registra") == 0) {
             gasto1 = list_next(mesFinanciero1->listaGastos);
             gasto2 = list_next(mesFinanciero2->listaGastos);
-            continue;
+            continue; // Si ambos gastos son "No Registra", saltar a la siguiente iteración
         }
         float porcentaje = 0.0;
         if (gasto1->monto > 0 && gasto2->monto == 0) {
-            porcentaje = (opcion == 1) ? 100.0 : -100.0;
+            porcentaje = (opcion == 1) ? 100.0 : -100.0; // Si el primer gasto es mayor que cero y el segundo es cero, asignar 100% o -100% según la opción
         }
         else if (gasto1->monto == 0 && gasto2->monto > 0) {
-            porcentaje = (opcion == 1) ? -100.0 : 100.0;
+            porcentaje = (opcion == 1) ? -100.0 : 100.0; // Si el primer gasto es cero y el segundo es mayor que cero, asignar -100% o 100% según la opción
         }
         else if (gasto1->monto != 0 && gasto2->monto != 0) {
             if (opcion == 1)
-                porcentaje = (gasto1->monto * 100.0 / (float)gasto2->monto) - 100.0;
+                porcentaje = (gasto1->monto * 100.0 / (float)gasto2->monto) - 100.0; // Calcular el porcentaje de variación entre los dos gastos
             else
-                porcentaje = (gasto2->monto * 100.0 / (float)gasto1->monto) - 100.0;
+                porcentaje = (gasto2->monto * 100.0 / (float)gasto1->monto) - 100.0; // Calcular el porcentaje de variación entre los dos gastos
         }
 
         // Color para la variación
@@ -1184,8 +1177,8 @@ void compararGastosEntreMeses(TreeMap *arbol)
                 gasto2->categoria, gasto2->monto, gasto1->monto, colorVar, porcentaje, RESET);
         }
 
-        gasto1 = list_next(mesFinanciero1->listaGastos);
-        gasto2 = list_next(mesFinanciero2->listaGastos);
+        gasto1 = list_next(mesFinanciero1->listaGastos); // Avanzar al siguiente gasto del primer mes
+        gasto2 = list_next(mesFinanciero2->listaGastos); // Avanzar al siguiente gasto del segundo mes
     }
     printf(GREEN"╚══════════════════════════════════════════════════════════╝\n"RESET);
 }
@@ -1211,12 +1204,12 @@ void subMenuAnalisis(TreeMap *arbol)
         switch (opcion) {
             case 1:
                 limpiarConsola();
-                mostrarPorcentajesPorCategorias(arbol);
+                mostrarPorcentajesPorCategorias(arbol); // Mostrar el porcentaje de gastos por mes
                 presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 2:
                 limpiarConsola();
-                compararGastosEntreMeses(arbol);
+                compararGastosEntreMeses(arbol); // Comparar gastos entre dos meses
                 presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 0:
@@ -1237,8 +1230,10 @@ void verAhorroMesAMes(TreeMap *arbol) { // Función para ver el ahorro mes a mes
     printf(BOLD"  AHORRADO MES A MES\n"RESET);
     printf(CYAN"╠══════════════════════════════════════════════════════════╣\n"RESET);
 
-    int maximoAhorro = 0;
-    int minimoAhorro = 0;
+    int maximoAhorro = 0; // Variable para almacenar el máximo ahorro encontrado
+    int minimoAhorro = 0; // Variable para almacenar el mínimo ahorro encontrado
+
+    // Variables para almacenar los nombres de los meses con máximo y mínimo ahorro
     char mesConMaximo[20] = "";
     char mesConMinimo[20] = "";
     int hayDatos = 0;
@@ -1311,7 +1306,7 @@ void verPorcentajeAhorro(TreeMap *arbol) { // Función para ver el porcentaje de
 }
 
 void submenuExcedenteMensual(TreeMap *arbol) {
-    int opcion;
+    int opcion; // Variable para almacenar la opción del submenú
     while (true) {
         limpiarConsola(); // Limpiar la consola antes de mostrar el submenú
         printf("\n");
@@ -1331,12 +1326,12 @@ void submenuExcedenteMensual(TreeMap *arbol) {
         switch (opcion) {
             case 1:
                 limpiarConsola();
-                verAhorroMesAMes(arbol);
+                verAhorroMesAMes(arbol); // Ver el ahorro mes a mes
                 presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 2:
                 limpiarConsola();
-                verPorcentajeAhorro(arbol);
+                verPorcentajeAhorro(arbol); // Ver el porcentaje de ahorro respecto a ingresos por mes
                 presionaEnter(); // Esperar a que el usuario presione Enter antes de continuar
                 break;
             case 0:
@@ -1347,15 +1342,3 @@ void submenuExcedenteMensual(TreeMap *arbol) {
         }
     }
 }
-
-
-
-
-
-//si se accede a un mes no modificiado se sale del bucle, hay que hacer que se reintente si no se ha modificado el mes (YA LO ARREGLÉ XD)
-//podria solo mostrar cuentas que si se hayan registrado, o en su defecto no dejar marcar no registrados
-// crear logica de que que si quedan pendientes en un mes "cerrado" se vaya a "otros gastos" del proximo mes (ya lo hice)
-
-// despues de usar la funcion marcar te pregunta si deseas cerrar el mes pero no sirve de nada si el mes ya se c0erro al haber usado la
-//funcion 1 registrar mov financiero. Creo que al menos en esta funcion no deberia de hacerse esa pregunta, solo preguntar si desea
-//mover los p endites al siguiente mes, y si no hay pendientes no hacer nada, o si no hay gastos no hacer nada
