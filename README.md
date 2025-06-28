@@ -76,6 +76,9 @@ Requisitos Previos:
 - Dependencia de la consola y del sistema operativo:
     -El uso de funciones como limpiarConsola() y colores ANSI puede no funcionar igual en todas las plataformas.
 
+- Error al validar entradas
+    -Algunas lecturas de datos (scanf) pueden ocasionar un bucle infinito si se ingresa algo no esperado como respuesta.
+
 **POSIBLES MEJORAS**
 
 - Mejorar la validación de entradas del usuario para evitar errores por datos no numéricos o fuera de rango.
