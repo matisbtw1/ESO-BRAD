@@ -21,6 +21,8 @@ Requisitos Previos:
 4. Una vez compilado sin errores, ejecuta el programa con:
     **./finanzas**
 
+**nota** Se dejara un csv finanzas_2026, por si requieren casos de prueba.
+
 **FUNCIONES IMPLEMENTADAS**
 
 - Gestion de archivos CSV

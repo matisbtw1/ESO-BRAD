@@ -248,7 +248,6 @@ void mostrarXmeses(TreeMap *arbol) {
         }
         printf(CYAN"\nMostrando meses %d-%d de %d. Página %d de %d.\n"RESET, inicio, fin, x, pagina, paginas);
         if (pagina < paginas) {
-            printf("Presiona Enter para continuar...");
             presioneTeclaParaContinuar(); // Esperar a que el usuario presione Enter para continuar
         }
     }
