@@ -21,6 +21,8 @@ Requisitos Previos:
 4. Una vez compilado sin errores, ejecuta el programa con:
     **./finanzas**
 
+**nota** Se dejara un csv finanzas_2026, por si requieren casos de prueba.
+
 **FUNCIONES IMPLEMENTADAS**
 
 - Gestion de archivos CSV
@@ -75,6 +77,9 @@ Requisitos Previos:
 
 - Dependencia de la consola y del sistema operativo:
     -El uso de funciones como limpiarConsola() y colores ANSI puede no funcionar igual en todas las plataformas.
+
+- Error al validar entradas
+    -Algunas lecturas de datos (scanf) pueden ocasionar un bucle infinito si se ingresa algo no esperado como respuesta.
 
 **POSIBLES MEJORAS**
 
